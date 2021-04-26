@@ -14,18 +14,10 @@
 namespace plz
 {
 
-    enum PizzaTime
-    {
-        Margarita = 1,
-        Regina    = 2,
-        Americana = 2,
-        Fantasia  = 4
-    };
-
     enum PizzaType
     {
-        Margarita = 2,
         Regina    = 1,
+        Margarita = 2,
         Americana = 4,
         Fantasia  = 8
     };
