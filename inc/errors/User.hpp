@@ -19,17 +19,17 @@ namespace plz::error
     {
 
         private:
-            char *m_text;
+            std::string m_message;
 
         public:
-            User() = delete;
-            User(User&&) = delete;
-            User(const User&) = delete;
-            User(char *message) : m_text(message) {}
-            ~User() = default;
+            explicit User(const char *message)
+                : m_message(message) {}
+            explicit User(const std::string& message)
+                : m_message(message) {}
+            ~User() noexcept {};
 
-            const char *what() const throw()
-            { return (m_text); }
+            const char *what() const noexcept
+            { return (m_message.c_str()); }
 
     }; // class User
 

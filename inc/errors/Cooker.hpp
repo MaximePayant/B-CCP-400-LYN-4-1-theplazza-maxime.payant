@@ -19,17 +19,17 @@ namespace plz::error
     {
 
         private:
-            char *m_text;
+            std::string m_message;
 
         public:
-            Cooker() = delete;
-            Cooker(Cooker&&) = delete;
-            Cooker(const Cooker&) = delete;
-            Cooker(char *message) : m_text(message) {}
-            ~Cooker() = default;
+            explicit Cooker(const char *message)
+                : m_message(message) {}
+            explicit Cooker(const std::string& message)
+                : m_message(message) {}
+            ~Cooker() noexcept {};
 
-            const char *what() const throw()
-            { return (m_text); }
+            const char *what() const noexcept
+            { return (m_message.c_str()); }
 
     }; // class Cooker
 

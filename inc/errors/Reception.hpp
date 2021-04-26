@@ -19,17 +19,17 @@ namespace plz::error
     {
 
         private:
-            char *m_text;
+            std::string m_message;
 
         public:
-            Reception() = delete;
-            Reception(Reception&&) = delete;
-            Reception(const Reception&) = delete;
-            Reception(char *message) : m_text(message) {}
-            ~Reception() = default;
+            explicit Reception(const char *message)
+                : m_message(message) {}
+            explicit Reception(const std::string& message)
+                : m_message(message) {}
+            ~Reception() noexcept {};
 
-            const char *what() const throw()
-            { return (m_text); }
+            const char *what() const noexcept
+            { return (m_message.c_str()); }
 
     }; // class Reception
 

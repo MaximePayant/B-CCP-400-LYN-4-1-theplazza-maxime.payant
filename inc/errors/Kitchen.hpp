@@ -19,17 +19,17 @@ namespace plz::error
     {
 
         private:
-            char *m_text;
+            std::string m_message;
 
         public:
-            Kitchen() = delete;
-            Kitchen(Kitchen&&) = delete;
-            Kitchen(const Kitchen&) = delete;
-            Kitchen(char *message) : m_text(message) {}
-            ~Kitchen() = default;
+            explicit Kitchen(const char *message)
+                : m_message(message) {}
+            explicit Kitchen(const std::string& message)
+                : m_message(message) {}
+            ~Kitchen() noexcept {};
 
-            const char *what() const throw()
-            { return (m_text); }
+            const char *what() const noexcept
+            { return (m_message.c_str()); }
 
     }; // class Kitchen
 
