@@ -52,7 +52,7 @@ BOLD	=	1
 BLINK	=	5
 END_COLOR	=	m
 
-all:	core games graphicals
+all:	introduction $(NAME)
 
 
 introduction: $(OBJ_FOLDER)
