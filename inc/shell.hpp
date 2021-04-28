@@ -12,9 +12,10 @@
 namespace plz {
     class Shell {
         private:
-            const std::string takeCommand();
+            std::string &takeCommand(std::string &command);
             bool verifyPizza(const std::string &name);
-            const Order verifyCommand(const std::string &command);
+            Order verifyCommand(std::string &command);
+            std::vector<Order> listOrder;
         public:
             const float cookerMultiplier;
             const unsigned cooksNumber;

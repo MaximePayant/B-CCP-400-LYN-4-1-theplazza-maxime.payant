@@ -9,14 +9,10 @@
 #define PLAZZA_HPP_
 #include <iostream>
 #include <string>
+#include <regex>
+#include <iterator>
 
 namespace plz {
-    enum PizzaTime {
-        Margarita = 1,
-        Regina = 2,
-        Americana = 2,
-        Fantasia = 4
-    };
     enum PizzaType {
         Margarita = 2,
         Regina = 1,
@@ -35,6 +31,6 @@ namespace plz {
         PizzaSize size;
         unsigned count;
     };
-};
+}
 
 #endif /* !PLAZZA_HPP_ */

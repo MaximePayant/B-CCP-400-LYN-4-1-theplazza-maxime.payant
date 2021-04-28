@@ -8,7 +8,7 @@
 CC	=	g++
 NAME	=	plazza
 NAME_TEST = unit_tests
-FLAGS	=	-W -c -Wall -Wextra -Werror -pedantic -g3 -std=c++2a
+FLAGS	=	-W -c -Wall -Wextra -pedantic -g3 -std=c++2a
 EXT := cpp
 
 SRC_FOLDER	:= 	src/
@@ -38,7 +38,6 @@ LIBR := $(R)
 SYSFILES := ./errors
 SHELL	:=	/bin/bash
 MAKEFLAGS	+=	--no-print-directory --silence --silent
-REDIRECT := 2>> ./errors
 
 #----Color----#
 
