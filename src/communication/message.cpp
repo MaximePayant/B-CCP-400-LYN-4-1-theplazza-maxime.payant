@@ -31,16 +31,14 @@ void Message::initClient()
 
 void Message::sendMessage(std::string& msg)
 {
-    char *buffer = msg.data();
-
-    m_message.mesg_text = buffer;
+    m_message.mesg_text =  msg.data();
     msgsnd(m_id, &m_message, sizeof(m_message), 0);
 }
 
 std::string Message::readMessage()
 {
     std::string buffer;
-    
+
     msgrcv(m_id, &m_message, sizeof(m_message), 1, 0);
     buffer = m_message.mesg_text;
     msgctl(m_id, IPC_RMID, nullptr);

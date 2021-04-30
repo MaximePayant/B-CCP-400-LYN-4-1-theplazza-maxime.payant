@@ -16,11 +16,11 @@ int main()
     std::string my_message("006");
     reception.initServer();
     kitchen.initClient();
+    std::string send("009");
 
     int pid = fork();
     if (pid == 0) {
         std::string message;
-        std::string send("009");
 
         //message = *kitchen;
         //std::cout << "From reception: " << "[" << message << "]" << std::endl;
