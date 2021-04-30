@@ -9,69 +9,45 @@
 #include <iostream>
 #include "communication/message.hpp"
 
-Message::Message() : m_socket(-1), m_addr(), m_kitchen(-1)
+Message::Message() :
+m_key(-1),
+m_id(-1),
+m_message()
 {}
 
 void Message::initServer()
 {
-    socklen_t size = sizeof(m_addr);
-
-    m_socket = socket(AF_INET, SOCK_STREAM, 0);
-    m_addr.sin_family = AF_INET;
-    m_addr.sin_port = htons(0);
-    m_addr.sin_addr.s_addr = htonl(INADDR_ANY);
-    bind(m_socket, (struct sockaddr *)&m_addr, size);
-    listen(m_socket, 5);
-    getsockname(m_socket, (struct sockaddr *)&m_addr, &size);
+    m_key = ftok("comFile", 65);
+    m_id = msgget(m_key, 0666 | IPC_CREAT);
+    m_message.mesg_type = 1;
 }
 
-int Message::getServerPort() const
+void Message::initClient()
 {
-    return (ntohs(m_addr.sin_port));
+    m_key = ftok("comFile", 65);
+    m_id = msgget(m_key, 0666 | IPC_CREAT);
+    m_message.mesg_type = 1;
 }
 
-void Message::initClient(int port)
+void Message::sendMessage(std::string& msg)
 {
-    m_kitchen = socket(AF_INET, SOCK_STREAM, 0);
-    m_addr.sin_family = AF_INET;
-    m_addr.sin_port = htons(port);
-    m_addr.sin_addr.s_addr = htonl(INADDR_ANY);
-}
+    char *buffer = msg.data();
 
-void Message::connectToKitchen()
-{
-    socklen_t size = sizeof(m_addr);
-
-    m_kitchen = accept(m_socket, (struct sockaddr *)&m_addr, &size);
-}
-
-void Message::connectToReception()
-{
-    socklen_t size = sizeof(m_addr);
-
-    connect(m_kitchen, (struct sockaddr *)&m_addr, size);
-}
-
-void Message::sendMessage(std::string message) const
-{
-    dprintf(m_kitchen, "%s", message.c_str());
+    m_message.mesg_text = buffer;
+    msgsnd(m_id, &m_message, sizeof(m_message), 0);
 }
 
 std::string Message::readMessage()
 {
-    char *buffer = new char[10];
-    std::string result;
-
-    while (read(m_kitchen, buffer, 10) > 0) {
-        result += buffer;
-        for (int i = 0; i < 10; i++)
-            buffer[i] = '\0';
-    }
-    delete[] buffer;
-    return (result);
+    std::string buffer;
+    
+    msgrcv(m_id, &m_message, sizeof(m_message), 1, 0);
+    buffer = m_message.mesg_text;
+    msgctl(m_id, IPC_RMID, nullptr);
+    return (buffer);
 }
 
-void operator<<(Message& obj, std::string message)
+void operator<<(Message& obj, std::string& message)
 {
     obj.sendMessage(message);
 }

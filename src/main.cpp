@@ -13,20 +13,21 @@ int main()
 {
     Message reception;
     Message kitchen;
-
+    std::string my_message("006");
     reception.initServer();
-    kitchen.initClient(reception.getServerPort());
+    kitchen.initClient();
 
     int pid = fork();
     if (pid == 0) {
         std::string message;
+        std::string send("009");
 
-        kitchen.connectToReception();
-        message = *kitchen;
-        std::cout << "I got: " << "[" << message << "]" << std::endl;
+        //message = *kitchen;
+        //std::cout << "From reception: " << "[" << message << "]" << std::endl;
+        kitchen << send;
         exit(0);
     } else {
-        reception.connectToKitchen();
-        reception << std::string("Hello World my name is V");
+        //reception << my_message;
+        std::cout << "From kitchen " << "[" << *reception << "]" << std::endl;
     }
 }

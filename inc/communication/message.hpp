@@ -8,29 +8,29 @@
 #ifndef MESSAGE
 #define MESSAGE
 
-#include <sys/socket.h>
+#include <sys/msg.h>
+#include <sys/ipc.h>
 #include <ostream>
-#include <netinet/in.h>
 
 class Message
 {
 private:
-    int m_socket;
-    struct sockaddr_in m_addr;
-    int m_kitchen;
+    key_t m_key;
+    int m_id;
+    struct msg_buffer {
+        long mesg_type;
+        char *mesg_text;
+    } m_message;
 public:
     Message();
     ~Message() = default;
-    void sendMessage(std::string message) const;
+    void sendMessage(std::string& message);
     std::string readMessage();
-    void connectToKitchen();
-    void connectToReception();
     void initServer();
-    void initClient(int port);
-    [[nodiscard]] int getServerPort() const;
+    void initClient();
 };
 
-void operator<<(Message& obj, std::string message);
+void operator<<(Message& obj, std::string& message);
 std::string operator*(Message &obj);
 
 #endif //MESSAGE

@@ -11,7 +11,9 @@ NAME_TEST = unit_tests
 FLAGS	=	-W -c -Wall -Wextra -Werror -pedantic -g3 -std=c++2a
 EXT := cpp
 
-SRC_FOLDER	:= 	src/
+SRC_FOLDER	:= 	src/				\
+				src/communication	\
+				src/error
 IGNORE_SRC := .
 SRC :=	$(filter-out $(IGNORE_SRC), $(sort $(shell find $(SRC_FOLDER) -ignore_readdir_race -maxdepth 1 -name '*.$(EXT)')))
 
@@ -56,7 +58,6 @@ all:	introduction $(NAME)
 
 
 introduction: $(OBJ_FOLDER)
-	@mkdir lib
 	echo -e "╔══Initialization compile"
 	echo -e "║"
 	echo -e "║"
@@ -90,22 +91,10 @@ clean:
 
 fclean:	clean
 	@rm -f $(NAME)
-	rm -r lib
 
 re: fclean all
 
 #lib: $(LFOLDER)
-
-core: introduction $(NAME)
-
-games:
-	make re -C src/pacman
-	make re -C src/nibbler
-
-graphicals:
-	make re -C src/libsfml
-	make re -C src/libncurses
-	make re -C src/libsdl
 
 $(LFOLDER):
 		make -C $@ $(LIBR)
@@ -119,4 +108,4 @@ rm_tests:
 	rm *.gcda
 	rm $(NAME_TEST)
 
-.PHONY: tests_run all fclean clean core graphicals games
+.PHONY: tests_run all fclean clean
