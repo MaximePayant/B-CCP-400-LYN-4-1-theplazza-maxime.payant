@@ -20,7 +20,7 @@ namespace plz
             virtual ~IKitchen() = default;
 
             virtual void cookPizza(PizzaType pizza) = 0;
-            virtual unsigned getFreeCookers() = 0;
+            virtual unsigned getFreePlace() = 0;
 
     }; // class IKitchen
 

@@ -21,6 +21,7 @@ namespace plz
 
             virtual void startCooking(PizzaType pizza) = 0;
             virtual bool hasNothing() = 0;
+            virtual bool canCook() = 0;
 
     }; // class ICooker
 
