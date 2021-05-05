@@ -11,6 +11,8 @@
 #include <vector>
 #include <queue>
 #include <memory>
+#include <condition_variable>
+#include <mutex>
 
 #include "interfaces/IKitchen.hpp"
 #include "interfaces/ICooker.hpp"
@@ -24,16 +26,19 @@ namespace plz
         private:
             const unsigned m_cookerCount;
             unsigned m_pizzaCount;
+            std::mutex m_mutex;
             std::queue<PizzaType> m_pizzaStack;
             std::vector<std::unique_ptr<ICooker>> m_cookerList;
 
         public:
             Kitchen() = delete;
             Kitchen(int cookerCount);
-            ~Kitchen();
+            ~Kitchen() = default;
 
-            void cookPizza(PizzaType pizza) override;
+            bool cookPizza(PizzaType pizza) override;
             unsigned getFreePlace() override;
+            PizzaType getNextOrder() override;
+            bool nothingToCook() override;
 
     }; // class Kitchen
 

@@ -71,7 +71,7 @@ $(NAME):	$(OBJ)
 	echo -e "╠══Now, build your project!"
 	echo -e "║"
 	echo -e "╠══Build in progress..."
-	$(CC) -o $(NAME) $^ $(LDFLAGS) -L./ -ldl	\
+	$(CC) -o $(NAME) $^ $(LDFLAGS) -L./ -ldl -lpthread	\
 		&& echo -e "╚$(COLOR)$(GREEN)$(END_COLOR)Your project was successfully built congratulation! $(RESET)"	\
 		|| echo -e "╠$(COLOR)$(BOLD);$(BLINK);$(RED)$(END_COLOR)WARNING$(R_BLINK)$(R_BOLD) Your project is bad change this and retry newbie!$(RESET)"\
 		"\n╚$(COLOR);$(RED)$(END_COLOR)Look in the error_list to see what is your problem.$(RESET)"

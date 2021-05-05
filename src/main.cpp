@@ -9,8 +9,30 @@
 #include <unistd.h>
 #include "communication/message.hpp"
 
+#include "Kitchen.hpp"
+#include "chrono/Chrono.hpp"
+
 int main()
 {
+    plz::Kitchen kitchen(100);
+    plz::Chrono timer;
+
+    for (int ctr = 0; ctr < 10000;) {
+        if (kitchen.getFreePlace() > 0) {
+            std::cout << "Order a pizza" << std::endl;
+            timer.start();
+            if (kitchen.cookPizza(plz::PizzaType::Americana))
+                ctr += 1;
+        }
+    }
+    std::cout << "Finish" << std::endl;
+    while (1) {
+        if (kitchen.nothingToCook())
+            if (timer.getElapsedTime() > 5)
+                break;
+    }
+
+    /*
     Message reception;
     Message kitchen;
     std::string my_message("006");
@@ -30,4 +52,6 @@ int main()
         //reception << my_message;
         std::cout << "From kitchen " << "[" << *reception << "]" << std::endl;
     }
+    */
+    return (0);
 }

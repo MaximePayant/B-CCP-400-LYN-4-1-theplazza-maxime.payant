@@ -5,17 +5,8 @@
 ** Kitchen.cpp
 */
 
-#include "kitchen/Kitchen.hpp"
-
-void plz::Kitchen::cookPizza(PizzaType pizza)
-{
-    if (m_pizzaCount + 1 > m_cookerCount * 2) {
-        std::cerr << "Can't cook the pizza, the kitchen is full." << std::endl;
-        return;
-    }
-    m_pizzaCount += 1;
-    m_pizzaStack.push(pizza);
-}
+#include "Kitchen.hpp"
+#include "Cooker.hpp"
 
 plz::Kitchen::Kitchen(int cookerCount)
     :   m_cookerCount(cookerCount),
@@ -24,13 +15,44 @@ plz::Kitchen::Kitchen(int cookerCount)
         m_cookerList()
 {
     for (int ctr = 0; ctr < cookerCount; ctr += 1)
-        m_cookerList.push_back(std::make_unique<ICooker>());
+        m_cookerList.push_back(std::make_unique<plz::Cooker>(*this));
 }
 
-plz::Kitchen::~Kitchen()
-{}
+bool plz::Kitchen::cookPizza(PizzaType pizza)
+{
+    std::unique_lock<std::mutex> locker(m_mutex);
+
+    if (m_pizzaCount + 1 > m_cookerCount * 2) {
+        std::cerr << "Can't cook the pizza, the kitchen is full." << std::endl;
+        return (false);
+    }
+    m_pizzaCount += 1;
+    m_pizzaStack.push(pizza);
+    return (true);
+}
 
 unsigned plz::Kitchen::getFreePlace()
 {
     return ((m_cookerCount * 2) - m_pizzaCount);
+}
+
+plz::PizzaType plz::Kitchen::getNextOrder()
+{
+    std::unique_lock<std::mutex> locker(m_mutex);
+
+    if (!m_pizzaCount)
+        return (plz::PizzaType::Nothing);
+
+    plz::PizzaType order = m_pizzaStack.front();
+
+    m_pizzaStack.pop();
+    m_pizzaCount -= 1;
+    return (order);
+}
+
+bool plz::Kitchen::nothingToCook()
+{
+    if (m_pizzaCount == 0)
+        return (true);
+    return (false);
 }

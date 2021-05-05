@@ -19,8 +19,10 @@ namespace plz
         public:
             virtual ~IKitchen() = default;
 
-            virtual void cookPizza(PizzaType pizza) = 0;
+            virtual bool cookPizza(PizzaType pizza) = 0;
             virtual unsigned getFreePlace() = 0;
+            virtual PizzaType getNextOrder() = 0;
+            virtual bool nothingToCook() = 0;
 
     }; // class IKitchen
 

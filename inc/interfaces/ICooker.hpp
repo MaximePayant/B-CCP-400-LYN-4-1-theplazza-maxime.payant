@@ -19,9 +19,7 @@ namespace plz
         public:
             virtual ~ICooker() = default;
 
-            virtual void startCooking(PizzaType pizza) = 0;
-            virtual bool hasNothing() = 0;
-            virtual bool canCook() = 0;
+            virtual bool isCooking() = 0;
 
     }; // class ICooker
 
