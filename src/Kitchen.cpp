@@ -20,12 +20,13 @@ plz::Kitchen::Kitchen(int cookerCount)
 
 bool plz::Kitchen::cookPizza(PizzaType pizza)
 {
-    std::unique_lock<std::mutex> locker(m_mutex);
-
     if (m_pizzaCount + 1 > m_cookerCount * 2) {
         std::cerr << "Can't cook the pizza, the kitchen is full." << std::endl;
         return (false);
     }
+
+    std::unique_lock<std::mutex> locker(m_mutex);
+
     m_pizzaCount += 1;
     m_pizzaStack.push(pizza);
     return (true);
@@ -38,11 +39,10 @@ unsigned plz::Kitchen::getFreePlace()
 
 plz::PizzaType plz::Kitchen::getNextOrder()
 {
-    std::unique_lock<std::mutex> locker(m_mutex);
-
     if (!m_pizzaCount)
         return (plz::PizzaType::Nothing);
 
+    std::unique_lock<std::mutex> locker(m_mutex);
     plz::PizzaType order = m_pizzaStack.front();
 
     m_pizzaStack.pop();
