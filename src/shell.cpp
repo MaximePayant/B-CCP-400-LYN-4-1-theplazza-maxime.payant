@@ -65,19 +65,37 @@ plz::Order plz::Shell::verifyCommand(std::string &command)
         else
             throw "taille de la pizza inconue";
         order.count = std::stoi((*i)[4]);
-        listOrder.push_back(order);
+        listOrder.push(order);
 //        std::cout << "test " << order.count  << " " << order.size << " "  << order.type << std::endl;
+
+//// BUG AVEC regina XXL x2 americana S x4 // le ';' n'est pas demander.
+    }
+}
+
+unsigned int plz::Shell::sendCommand(std::queue<Order> listOrder, plz::Reception *recep)
+{
+    try {
+        recep->exec(listOrder);
+        while (!this->listOrder.empty())
+            this->listOrder.pop();
+        return (0);
+    }
+    catch (std::exception const &error){
+        std::cerr << error.what() << std::endl;
+        return (0);
     }
 }
 
 unsigned int plz::Shell::exec()
 {
+    plz::Reception *recep = new plz::Reception();
     std::string command;
     std::cout << "Welcum Welcum, bienvenue dans le restaurant \"la fine bouche\"\nnous vous proposons les meilleurs pizzas du pays\nfaites votre choix!\n\nPizza: regina, margarita, americana, fantasia.\nTaille: S, M, L, XL, XXL\n\n\"Mode d'emploie de commande:'nom de la pizza' 'taille' x'nombre de pizza'\"\nExample: \"regina XXL x2; fantasia M x3; margarita S x1\"" << std::endl;
     while (1) {
         std::cout << "\nPuis-je avoir votre commande ?\nChoix: ";
         try {
             verifyCommand(this->takeCommand(command));
+            sendCommand(this->listOrder, recep);
         }
         catch (const char *msg) {
             std::cerr << msg << std::endl;

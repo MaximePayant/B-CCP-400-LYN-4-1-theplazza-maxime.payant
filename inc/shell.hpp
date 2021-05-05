@@ -22,7 +22,7 @@ namespace plz {
             const unsigned cooksNumber;
             const unsigned refillTime;
             unsigned int exec();
-            unsigned int sendCommand(std::queue<Order> listOrder);
+            unsigned int sendCommand(std::queue<Order> listOrder, plz::Reception *recep);
             Shell(float cookerMultiplier, unsigned cooksNumber, unsigned refillTime);
             ~Shell();
     };

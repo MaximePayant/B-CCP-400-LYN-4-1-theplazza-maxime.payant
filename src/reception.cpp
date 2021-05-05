@@ -45,7 +45,7 @@ void plz::Reception::sendOrder(int kitchenTarget, int type)
     std::cout << type << std::endl;
 }
 
-plz::Reception::Reception(std::queue<Order> listOrder)
+int plz::Reception::exec(std::queue<Order> listOrder)
 {
     int kitchenTarget;
     this->listStatusKitchen = checkStatusKitchen();
@@ -59,9 +59,12 @@ plz::Reception::Reception(std::queue<Order> listOrder)
 //        this->listOrder.pop();
 //    while (!listOrder.empty())
 //        listOrder.pop();
-    std::cout << std::endl;
-//    std::cout << listOrder.front().count << std::endl << std::endl;
-   
+    std::cout << std::endl;  
+}
+
+plz::Reception::Reception()
+{
+    
 }
 
 plz::Reception::~Reception()
