@@ -8,19 +8,21 @@
 #ifndef SHELL_HPP_
 #define SHELL_HPP_
 #include "plazza.hpp"
-
+#include "reception.hpp"
 namespace plz {
     class Shell {
         private:
             std::string &takeCommand(std::string &command);
             bool verifyPizza(const std::string &name);
             Order verifyCommand(std::string &command);
-            std::vector<Order> listOrder;
+            std::queue<Order> listOrder;
         public:
+
             const float cookerMultiplier;
             const unsigned cooksNumber;
             const unsigned refillTime;
             unsigned int exec();
+            unsigned int sendCommand(std::queue<Order> listOrder);
             Shell(float cookerMultiplier, unsigned cooksNumber, unsigned refillTime);
             ~Shell();
     };

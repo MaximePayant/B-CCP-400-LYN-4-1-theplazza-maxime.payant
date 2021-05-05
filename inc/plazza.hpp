@@ -11,6 +11,7 @@
 #include <string>
 #include <regex>
 #include <iterator>
+#include <queue>
 
 namespace plz {
     enum PizzaType {
