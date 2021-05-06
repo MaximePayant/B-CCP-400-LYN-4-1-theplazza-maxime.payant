@@ -9,6 +9,7 @@
 
 int main(int ac, char **av)
 {
+    (void)ac;
     plz::Shell *shell = NULL;
     try {
         shell = new plz::Shell(std::stof(av[1]), std::stoi(av[2]), std::stoi(av[3]));

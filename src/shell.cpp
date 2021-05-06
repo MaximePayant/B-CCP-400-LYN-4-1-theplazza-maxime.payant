@@ -24,7 +24,7 @@ std::string &plz::Shell::takeCommand(std::string &command)
     return command;
 }
 
-plz::Order plz::Shell::verifyCommand(std::string &command)
+void plz::Shell::verifyCommand(std::string &command)
 {
     Order order;
  

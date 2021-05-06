@@ -14,7 +14,7 @@ namespace plz {
         private:
             std::string &takeCommand(std::string &command);
             bool verifyPizza(const std::string &name);
-            Order verifyCommand(std::string &command);
+            void verifyCommand(std::string &command);
             std::queue<Order> listOrder;
         public:
 

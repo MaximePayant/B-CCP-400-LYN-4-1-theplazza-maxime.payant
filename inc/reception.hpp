@@ -21,6 +21,7 @@ namespace plz {
             void sendOrder(int kitchenTarget, int type);
             std::queue<Order> deleteOrder(std::queue<Order> listOrder);
             int exec(std::queue<Order> listOrder);
+            int createKitchen();
             Reception();
             ~Reception();
     };
