@@ -9,22 +9,12 @@
 #include <iostream>
 #include "communication/message.hpp"
 
-Message::Message() :
+Message::Message(int proj_id) :
 m_key(-1),
 m_id(-1),
 m_message()
-{}
-
-void Message::initServer()
 {
-    m_key = ftok("comFile", 65);
-    m_id = msgget(m_key, 0666 | IPC_CREAT);
-    m_message.mesg_type = 1;
-}
-
-void Message::initClient()
-{
-    m_key = ftok("comFile", 65);
+    m_key = ftok("comFile", 60 + proj_id);
     m_id = msgget(m_key, 0666 | IPC_CREAT);
     m_message.mesg_type = 1;
 }
