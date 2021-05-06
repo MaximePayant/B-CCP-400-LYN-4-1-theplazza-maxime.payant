@@ -28,7 +28,7 @@ plz::Kitchen::Kitchen(unsigned cookerCount)
         m_deliveryTimer(plz::Chrono::Wait),
         m_isWorking(true)
 {
-    for (int ctr = 0; ctr < cookerCount; ctr += 1)
+    for (unsigned ctr = 0; ctr < cookerCount; ctr += 1)
         m_cookerList.push_back(std::make_unique<plz::Cooker>(*this));
 }
 
