@@ -12,6 +12,7 @@ FLAGS	=	-W -c -Wall -Wextra -Werror -pedantic -g3 -std=c++2a
 EXT := cpp
 
 SRC_FOLDER	:= 	src/				\
+				src/kitchen			\
 				src/communication	\
 				src/error
 IGNORE_SRC := .

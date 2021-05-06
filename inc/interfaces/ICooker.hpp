@@ -16,10 +16,11 @@ namespace plz
     class ICooker
     {
 
+        private:
+            virtual void workHard() = 0;
+
         public:
             virtual ~ICooker() = default;
-
-            virtual bool isCooking() = 0;
 
     }; // class ICooker
 

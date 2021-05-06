@@ -20,9 +20,12 @@ namespace plz
             virtual ~IKitchen() = default;
 
             virtual bool cookPizza(PizzaType pizza) = 0;
-            virtual unsigned getFreePlace() = 0;
+            virtual unsigned getFreePlace() const = 0;
             virtual PizzaType getNextOrder() = 0;
-            virtual bool nothingToCook() = 0;
+            virtual bool gatherIngredient(plz::PizzaType type) = 0;
+            virtual void finishPizza() = 0;
+
+            virtual void operator()() = 0;
 
     }; // class IKitchen
 

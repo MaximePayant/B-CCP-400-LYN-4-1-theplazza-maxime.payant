@@ -9,10 +9,23 @@
 #define PLAZZA_HPP_
 
 #include <unordered_map>
+#include <set>
 #include <iostream>
 
 namespace plz
 {
+
+    enum Ingredient
+    {
+        Tomato,
+        Gruyere,
+        Ham,
+        Mushrooms,
+        Steak,
+        GoatCheese,
+        EggPlant,
+        ChiefLove
+    };
 
     enum PizzaType
     {
@@ -47,9 +60,32 @@ namespace plz
         {PizzaType::Fantasia,  4}
     };
 
+    static std::unordered_map<PizzaType, std::set<Ingredient>> pizzaRecipe =
+    {
+        {PizzaType::Margarita, {Ingredient::Tomato, Ingredient::Gruyere                                                }},
+        {PizzaType::Regina,    {Ingredient::Tomato, Ingredient::Gruyere,  Ingredient::Ham,        Ingredient::Mushrooms}},
+        {PizzaType::Americana, {Ingredient::Tomato, Ingredient::Gruyere,  Ingredient::Steak                            }},
+        {PizzaType::Fantasia,  {Ingredient::Tomato, Ingredient::EggPlant, Ingredient::GoatCheese, Ingredient::ChiefLove}}
+    };
+
 } // namespace plz
 
-inline std::ostream& operator<<(std::ostream& os, plz::PizzaType& type)
+inline std::ostream& operator<<(std::ostream& os, const plz::Ingredient& type)
+{
+    switch (type) {
+        case plz::Ingredient::Tomato:     os << "Tomato";     break;
+        case plz::Ingredient::Gruyere:    os << "Gruyere";    break;
+        case plz::Ingredient::Ham:        os << "Ham";        break;
+        case plz::Ingredient::Mushrooms:  os << "Mushrooms";  break;
+        case plz::Ingredient::Steak:      os << "Steak";      break;
+        case plz::Ingredient::GoatCheese: os << "GoatCheese"; break;
+        case plz::Ingredient::EggPlant:   os << "EggPlant";   break;
+        case plz::Ingredient::ChiefLove:  os << "ChiefLove";  break;
+    }
+    return (os);
+}
+
+inline std::ostream& operator<<(std::ostream& os, const plz::PizzaType& type)
 {
     switch (type) {
         case plz::PizzaType::Nothing:   os << "Nothing";   break;
@@ -61,7 +97,7 @@ inline std::ostream& operator<<(std::ostream& os, plz::PizzaType& type)
     return (os);
 }
 
-inline std::ostream& operator<<(std::ostream& os, plz::PizzaSize& size)
+inline std::ostream& operator<<(std::ostream& os, const plz::PizzaSize& size)
 {
     switch (size) {
         case plz::PizzaSize::S:   os << "S";   break;
@@ -73,7 +109,7 @@ inline std::ostream& operator<<(std::ostream& os, plz::PizzaSize& size)
     return (os);
 }
 
-inline std::ostream& operator<<(std::ostream& os, plz::Order& order)
+inline std::ostream& operator<<(std::ostream& os, const plz::Order& order)
 {
     os << "For table 55 :"    << std::endl
        << "\t" << order.type  << std::endl

@@ -9,7 +9,6 @@
 
 plz::Cooker::Cooker(IKitchen& kitchen)
     :   m_kitchen(kitchen),
-        m_stopSrc(),
         m_thread(
             [this](std::stop_token token) {
                 while (!token.stop_requested())
@@ -23,11 +22,6 @@ plz::Cooker::Cooker(IKitchen& kitchen)
 
 void plz::Cooker::workHard()
 {
-    if (m_statut == Cooking) {
-        while (m_timer.getElapsedTime() < plz::pizzaTime[m_order]);
-        std::cout << m_order << " is cooked !" << std::endl;
-        m_statut = HasNothing;
-    }
     if (m_statut == HasNothing) {
         m_order = m_kitchen.getNextOrder();
         if (m_order != plz::PizzaType::Nothing) {
@@ -35,11 +29,9 @@ void plz::Cooker::workHard()
             m_statut = Cooking;
         }
     }
-}
-
-bool plz::Cooker::isCooking()
-{
-    if (m_statut == Cooking)
-        return (true);
-    return (false);
+    if (m_statut == Cooking) {
+        while (m_timer.getElapsedTime() < plz::pizzaTime[m_order]);
+        m_kitchen.finishPizza();
+        m_statut = HasNothing;
+    }
 }

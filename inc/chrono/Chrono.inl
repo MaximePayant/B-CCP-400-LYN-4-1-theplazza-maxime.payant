@@ -28,7 +28,8 @@ inline void plz::Chrono::start()
 
 inline void plz::Chrono::stop()
 {
-    m_end = std::chrono::steady_clock::now();
+    if (m_isRuning == true)
+        m_end = std::chrono::steady_clock::now();
     m_isRuning = false;
 }
 

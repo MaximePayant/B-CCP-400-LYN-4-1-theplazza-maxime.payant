@@ -14,23 +14,14 @@
 
 int main()
 {
-    plz::Kitchen kitchen(100);
+    plz::Kitchen kitchen(10);
     plz::Chrono timer;
 
-    for (int ctr = 0; ctr < 10000;) {
-        if (kitchen.getFreePlace() > 0) {
-            std::cout << "Order a pizza" << std::endl;
-            timer.start();
-            if (kitchen.cookPizza(plz::PizzaType::Americana))
-                ctr += 1;
-        }
+    for (int ctr = 0; ctr < 20;) {
+        kitchen.cookPizza(plz::PizzaType::Americana);
+        ctr += 1;
     }
-    std::cout << "Finish" << std::endl;
-    while (1) {
-        if (kitchen.nothingToCook())
-            if (timer.getElapsedTime() > 5)
-                break;
-    }
+    kitchen();
 
     /*
     Message reception;

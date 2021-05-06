@@ -23,20 +23,17 @@ namespace plz
 
         private:
             IKitchen& m_kitchen;
-            std::stop_source m_stopSrc;
             std::jthread m_thread;
             plz::PizzaType m_order;
             plz::Chrono m_timer;
             enum statut { Cooking, HasNothing } m_statut;
 
-            void workHard();
+            void workHard() override;
 
         public:
             Cooker() = delete;
             Cooker(IKitchen& kitchen);
-            ~Cooker() = default;
-
-            bool isCooking() override;
+            ~Cooker() override = default;
 
     }; // class Cooker
 
