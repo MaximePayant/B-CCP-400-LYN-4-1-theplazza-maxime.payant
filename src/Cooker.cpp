@@ -22,6 +22,9 @@ plz::Cooker::Cooker(IKitchen& kitchen)
 
 void plz::Cooker::workHard()
 {
+    static std::chrono::milliseconds waiting(1);
+
+    std::this_thread::sleep_for(waiting);
     if (m_statut == HasNothing) {
         m_order = m_kitchen.getNextOrder();
         if (m_order != plz::PizzaType::Nothing) {
@@ -30,7 +33,8 @@ void plz::Cooker::workHard()
         }
     }
     if (m_statut == Cooking) {
-        while (m_timer.getElapsedTime() < plz::pizzaTime[m_order]);
+        while (m_timer.getElapsedTime() < plz::pizzaTime[m_order])
+            std::this_thread::sleep_for(waiting);
         m_kitchen.finishPizza();
         m_statut = HasNothing;
     }

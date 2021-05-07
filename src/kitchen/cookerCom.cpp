@@ -33,7 +33,6 @@ plz::PizzaType plz::Kitchen::getNextOrder()
     std::unique_lock<std::mutex> locker(m_mutex);
     plz::PizzaType order = m_pizzaQueue.front();
 
-    //if (order == plz::PizzaType::Nothing)
     if (!gatherIngredient(order) || order == plz::PizzaType::Nothing)
         return (plz::PizzaType::Nothing);
     m_pizzaQueue.pop();
@@ -50,5 +49,4 @@ void plz::Kitchen::finishPizza()
     if (!m_pizzaWaiting
     && !m_pizzaCooking)
         m_serviceTimer.start();
-    std::cout << "Pizza coooked !" << std::endl;
 }
