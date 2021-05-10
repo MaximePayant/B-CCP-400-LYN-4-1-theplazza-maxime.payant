@@ -1,2 +1,9 @@
-
+.vscode/
+bs/
+cmake-build-debug/
+obj/
+CMakeLists.txt
+comFile
 plazza
+test
+errors

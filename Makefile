@@ -8,10 +8,13 @@
 CC	=	g++
 NAME	=	plazza
 NAME_TEST = unit_tests
-FLAGS	=	-W -c -Wall -Wextra -pedantic -g3 -std=c++2a
+FLAGS	=	-W -c -Wall -Wextra -Werror -pedantic -g3 -std=c++2a
 EXT := cpp
 
-SRC_FOLDER	:= 	src/
+SRC_FOLDER	:= 	src/				\
+				src/kitchen			\
+				src/communication	\
+				src/error
 IGNORE_SRC := .
 SRC :=	$(filter-out $(IGNORE_SRC), $(sort $(shell find $(SRC_FOLDER) -ignore_readdir_race -maxdepth 1 -name '*.$(EXT)')))
 
@@ -38,6 +41,7 @@ LIBR := $(R)
 SYSFILES := ./errors
 SHELL	:=	/bin/bash
 MAKEFLAGS	+=	--no-print-directory --silence --silent
+REDIRECT := 2>> ./errors
 
 #----Color----#
 
@@ -68,7 +72,7 @@ $(NAME):	$(OBJ)
 	echo -e "╠══Now, build your project!"
 	echo -e "║"
 	echo -e "╠══Build in progress..."
-	$(CC) -o $(NAME) $^ $(LDFLAGS)	\
+	$(CC) -o $(NAME) $^ $(LDFLAGS) -L./ -ldl -lpthread	\
 		&& echo -e "╚$(COLOR)$(GREEN)$(END_COLOR)Your project was successfully built congratulation! $(RESET)"	\
 		|| echo -e "╠$(COLOR)$(BOLD);$(BLINK);$(RED)$(END_COLOR)WARNING$(R_BLINK)$(R_BOLD) Your project is bad change this and retry newbie!$(RESET)"\
 		"\n╚$(COLOR);$(RED)$(END_COLOR)Look in the error_list to see what is your problem.$(RESET)"
@@ -93,6 +97,8 @@ re: fclean all
 
 #lib: $(LFOLDER)
 
+$(LFOLDER):
+		make -C $@ $(LIBR)
 
 tests_run:
 	g++ -o $(NAME_TEST) $(SRC) $(TEST) $(INC) --coverage -lcriterion
