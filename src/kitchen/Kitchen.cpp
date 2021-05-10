@@ -39,12 +39,14 @@ unsigned plz::Kitchen::getFreePlace() const
 
 void plz::Kitchen::operator()()
 {
+    static std::chrono::milliseconds waiting(1);
+
     m_deliveryTimer.start();
     while (m_isWorking) {
+        std::this_thread::sleep_for(waiting);
         if (m_serviceTimer.getElapsedTime() > 5)
             m_isWorking = false;
         if (m_deliveryTimer.getElapsedTime() > 1) {
-            std::cout << "Delivery arrived !" << std::endl;
             for (auto& [_, count] : m_ingredientStock)
                 count += 1;
             m_deliveryTimer.start();
