@@ -22,12 +22,11 @@ private:
         char *mesg_text;
     } m_message;
 public:
-    Message();
+    Message(int proj_id);
+    Message() = delete;
     ~Message() = default;
     void sendMessage(std::string& message);
     std::string readMessage();
-    void initServer();
-    void initClient();
 };
 
 void operator<<(Message& obj, std::string& message);
