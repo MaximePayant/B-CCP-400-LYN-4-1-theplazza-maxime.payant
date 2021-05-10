@@ -42,7 +42,6 @@ int main()
     reception_1 << my_message;
     reception_2 << send;
     //std::cout << "From kitchen " << "[" << *reception << "]" << std::endl;
-}
     /*plz::Kitchen kitchen(10);
     plz::Chrono timer;
 
@@ -71,5 +70,5 @@ int main()
     } else {
         //reception << my_message;
         std::cout << "From kitchen " << "[" << *reception << "]" << std::endl;
-    }
+    }*/
 }
