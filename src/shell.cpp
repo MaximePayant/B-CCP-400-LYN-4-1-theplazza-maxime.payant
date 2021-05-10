@@ -27,18 +27,18 @@ std::string &plz::Shell::takeCommand(std::string &command)
 void plz::Shell::verifyCommand(std::string &command)
 {
     Order order;
- 
+
     std::regex words_regex("(\\s*?([a-zA-Z]+)\\s+(S|M|L|XL|XXL)\\s+x([1-9][0-9]*));");
     auto words_begin = std::sregex_iterator(command.begin(), command.end(), words_regex);
     auto words_end = std::sregex_iterator();
- 
+
     if (std::distance(words_begin, words_end) == 0)
         throw "error with regex";
-    
+
     for (std::sregex_iterator i = words_begin; i != words_end; ++i) {
         std::smatch match = *i;
-        std::string match_str = match.str();      
-        
+        std::string match_str = match.str();
+
         //std::cout << (*i)[2] << std::endl;
         //std::cout << (*i)[3] << std::endl;
         //std::cout << (*i)[4] << std::endl;

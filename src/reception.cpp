@@ -25,7 +25,7 @@ int plz::Reception::createKitchen()
     if (c_pid == -1) {
         perror("fork");
         exit(EXIT_FAILURE);
-    } 
+    }
     else if (c_pid == 0) {
         std::cout << "chil process " << getpid() << std::endl;
         //function creation kitchen//
@@ -75,7 +75,7 @@ int plz::Reception::exec(std::queue<Order> listOrder)
     std::cout << listOrder.front().count << std::endl;
     while (listOrder.front().count != 0 && listOrder.size() != 0) {
         kitchenTarget = findKitchen();
-        sendOrder(kitchenTarget, listOrder.front().type); 
+        sendOrder(kitchenTarget, listOrder.front().type);
         listOrder = deleteOrder(listOrder);
     }
     std::cout << std::endl;
