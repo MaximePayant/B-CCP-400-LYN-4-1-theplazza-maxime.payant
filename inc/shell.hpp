@@ -18,9 +18,9 @@ namespace plz {
             std::queue<Order> listOrder;
         public:
 
-            const float cookerMultiplier;
-            const unsigned cooksNumber;
-            const unsigned refillTime;
+            static float cookerMultiplier;
+            static unsigned cooksNumber;
+            static unsigned refillTime;
             unsigned int exec();
             unsigned int sendCommand(std::queue<Order> listOrder, plz::Reception *recep);
             Shell(float cookerMultiplier, unsigned cooksNumber, unsigned refillTime);

@@ -26,7 +26,7 @@ TEST_FOLDER	:= .
 IGNORE_TEST := .
 TEST :=	$(filter-out $(IGNORE_TEST), $(sort $(shell find $(TEST_FOLDER) -ignore_readdir_race -maxdepth 1 -name '*.$(EXT)')))
 
-LFOLDER :=	.
+LFOLDER :=	src/libfoo src/libnon src/liboui
 LIB_FOLDER := 	#-L $(LFOLDER)
 LIB_NAME :=
 LIB_EXT :=	-lcriterion -ldl

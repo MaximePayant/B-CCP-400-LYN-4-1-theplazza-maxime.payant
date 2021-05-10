@@ -72,7 +72,7 @@ namespace plz
         {PizzaType::Americana, {Ingredient::Tomato, Ingredient::Gruyere,  Ingredient::Steak                            }},
         {PizzaType::Fantasia,  {Ingredient::Tomato, Ingredient::EggPlant, Ingredient::GoatCheese, Ingredient::ChiefLove}}
     };
-
+    
 } // namespace plz
 
 inline std::ostream& operator<<(std::ostream& os, const plz::Ingredient& type)

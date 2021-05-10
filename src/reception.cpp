@@ -6,6 +6,9 @@
 */
 
 #include "reception.hpp"
+#include "Kitchen.hpp"
+#include "shell.hpp"
+
 
 std::vector<int> plz::Reception::checkStatusKitchen()
 {
@@ -27,8 +30,8 @@ int plz::Reception::createKitchen()
         exit(EXIT_FAILURE);
     }
     else if (c_pid == 0) {
-        std::cout << "chil process " << getpid() << std::endl;
-        //function creation kitchen//
+//        std::cout << "chil process " << getpid() << std::endl;
+        plz::Kitchen kitchen(plz::Shell::cooksNumber);
         exit (0);
     }
     return (1);

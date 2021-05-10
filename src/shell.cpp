@@ -7,9 +7,15 @@
 
 #include "shell.hpp"
 
+float plz::Shell::cookerMultiplier = 0;
+unsigned plz::Shell::cooksNumber = 0;
+unsigned plz::Shell::refillTime = 0;
 
-plz::Shell::Shell(float cookerMultiplier, unsigned int cooksNumber, unsigned int refillTime) : cookerMultiplier(cookerMultiplier), cooksNumber(cooksNumber), refillTime(refillTime)
+plz::Shell::Shell(float cookerMultiplier, unsigned int cooksNumber, unsigned int refillTime)
 {
+    this->cookerMultiplier = cookerMultiplier;
+    this->cooksNumber = cooksNumber;
+    this->refillTime = refillTime;
 }
 
 plz::Shell::~Shell()
@@ -90,7 +96,7 @@ unsigned int plz::Shell::exec()
 {
     plz::Reception *recep = new plz::Reception();
     std::string command;
-    std::cout << "Welcum Welcum, bienvenue dans le restaurant \"la fine bouche\"\nnous vous proposons les meilleurs pizzas du pays\nfaites votre choix!\n\nPizza: regina, margarita, americana, fantasia.\nTaille: S, M, L, XL, XXL\n\n\"Mode d'emploie de commande:'nom de la pizza' 'taille' x'nombre de pizza'\"\nExample: \"regina XXL x2; fantasia M x3; margarita S x1\"" << std::endl;
+    std::cout << "Wellcum Wellcum, bienvenue dans le restaurant \"la fine bouche\"\nnous vous proposons les meilleurs pizzas du pays\nfaites votre choix!\n\nPizza: regina, margarita, americana, fantasia.\nTaille: S, M, L, XL, XXL\n\n\"Mode d'emploie de commande:'nom de la pizza' 'taille' x'nombre de pizza'\"\nExample: \"regina XXL x2; fantasia M x3; margarita S x1\"" << std::endl;
     while (1) {
         std::cout << "\nPuis-je avoir votre commande ?\nChoix: ";
         try {

@@ -16,7 +16,8 @@
 int main(int ac, char **av)
 {
     (void)ac;
-    (void)av;
+//    (void)av;
+/*
     plz::Kitchen kitchen(10);
     plz::Chrono timer;
 
@@ -25,8 +26,8 @@ int main(int ac, char **av)
         ctr += 1;
     }
     kitchen();
-
-    /*
+*/
+    
     plz::Shell *shell = NULL;
     try {
         shell = new plz::Shell(std::stof(av[1]), std::stoi(av[2]), std::stoi(av[3]));
@@ -38,7 +39,7 @@ int main(int ac, char **av)
         std::cerr << error.what() << std::endl;
         return (0);
     }
-    */
+    
 
     /*
     Message reception;
