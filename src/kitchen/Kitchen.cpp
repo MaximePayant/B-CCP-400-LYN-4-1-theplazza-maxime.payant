@@ -32,19 +32,22 @@ plz::Kitchen::Kitchen(unsigned cookerCount, unsigned id)
         m_deliveryTimer(plz::Chrono::Wait),
         m_isWorking(true)
 {
+    std::cout << "Juif le retour" << std::endl;
     for (unsigned ctr = 0; ctr < cookerCount; ctr += 1)
         m_cookerList.push_back(std::make_unique<plz::Cooker>(*this));
 }
 
 void plz::Kitchen::operator()()
 {
+    std::cout << "lol" << std::endl;
     static std::chrono::milliseconds waiting(1);
-    std::string message;
+    std::string message = "";
 
     m_deliveryTimer.start();
     while (m_isWorking) {
         std::this_thread::sleep_for(waiting);
-        message = m_messenger.readMessage();
+        message = *m_messenger;
+        std::cout << "Message: [" << message << "]" << std::endl;
         if (m_deliveryTimer.getElapsedTime() > 1) {
             for (auto& [_, count] : m_ingredientStock)
                 count += 1;
@@ -52,7 +55,7 @@ void plz::Kitchen::operator()()
         }
         if (m_serviceTimer.getElapsedTime() > 5)
             m_isWorking = false;
-        else if (message.empty())
+        else if (message.size() > 1)
             checkOrder(message);
     }
 }

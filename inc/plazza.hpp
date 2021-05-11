@@ -11,6 +11,11 @@
 #include <unordered_map>
 #include <set>
 #include <iostream>
+#include <string>
+#include <regex>
+#include <iterator>
+#include <queue>
+#include <unistd.h>
 
 namespace plz
 {

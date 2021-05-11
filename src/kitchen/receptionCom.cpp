@@ -14,7 +14,7 @@ unsigned plz::Kitchen::getFreePlace() const
 
 void plz::Kitchen::checkOrder(const std::string& message)
 {
-    (void)message;
+    std::cout << "Message : <" << message << "> " << message.size() << std::endl;
 }
 
 bool plz::Kitchen::cookPizza(PizzaType pizza)

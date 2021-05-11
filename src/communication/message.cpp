@@ -21,7 +21,8 @@ m_message()
 
 void plz::Message::sendMessage(std::string& msg)
 {
-    m_message.mesg_text =  msg.data();
+    std::cout << "send id : " << m_id << std::endl;
+    m_message.mesg_text = msg.data();
     msgsnd(m_id, &m_message, sizeof(m_message), 0);
 }
 
@@ -29,7 +30,9 @@ std::string plz::Message::readMessage()
 {
     std::string buffer;
 
+    std::cout << "read id : " << m_id << std::endl;
     msgrcv(m_id, &m_message, sizeof(m_message), 1, 0);
+    std::cout << "From struct " << m_message.mesg_text << std::endl;
     buffer = m_message.mesg_text;
     msgctl(m_id, IPC_RMID, nullptr);
     return (buffer);
