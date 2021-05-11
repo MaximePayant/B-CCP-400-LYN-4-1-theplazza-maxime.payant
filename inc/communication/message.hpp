@@ -12,24 +12,31 @@
 #include <sys/ipc.h>
 #include <ostream>
 
-class Message
+namespace plz
 {
-private:
-    key_t m_key;
-    int m_id;
-    struct msg_buffer {
-        long mesg_type;
-        char *mesg_text;
-    } m_message;
-public:
-    Message(int proj_id);
-    Message() = delete;
-    ~Message() = default;
-    void sendMessage(std::string& message);
-    std::string readMessage();
-};
 
-void operator<<(Message& obj, std::string& message);
-std::string operator*(Message &obj);
+    class Message
+    {
+
+        private:
+            key_t m_key;
+            int m_id;
+            struct msg_buffer {
+                long mesg_type;
+                char *mesg_text;
+            } m_message;
+        public:
+            Message(int proj_id);
+            Message() = delete;
+            ~Message() = default;
+            void sendMessage(std::string& message);
+            std::string readMessage();
+
+    }; // class Message
+
+} // namespace plz
+
+void operator<<(plz::Message& obj, std::string& message);
+std::string operator*(plz::Message &obj);
 
 #endif //MESSAGE

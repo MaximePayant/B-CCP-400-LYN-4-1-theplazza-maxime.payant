@@ -8,16 +8,18 @@
 #include <iostream>
 #include <unistd.h>
 #include "communication/message.hpp"
+#include "shell.hpp"
 
 #include "Kitchen.hpp"
 #include "chrono/Chrono.hpp"
 
-int main()
+int main(int ac, char **av)
 {
-    Message reception_1(1);
-    Message kitchen_1(1);
-    Message reception_2(2);
-    Message kitchen_2(2);
+    /*
+    plz::Message reception_1(1);
+    plz::Message kitchen_1(1);
+    plz::Message reception_2(2);
+    plz::Message kitchen_2(2);
     std::string my_message("006");
     std::string send("009");
 
@@ -41,6 +43,22 @@ int main()
     }
     reception_1 << my_message;
     reception_2 << send;
+    */
+
+
+    (void)ac;
+
+    plz::Shell shell();
+    try {
+        shell = new plz::Shell(std::stof(av[1]), std::stoi(av[2]), std::stoi(av[3]));
+        unsigned ret = shell->exec();
+        delete (shell);
+        return (ret);
+    }
+    catch (std::exception const &error){
+        std::cerr << error.what() << std::endl;
+        return (0);
+    }
     //std::cout << "From kitchen " << "[" << *reception << "]" << std::endl;
     /*plz::Kitchen kitchen(10);
     plz::Chrono timer;

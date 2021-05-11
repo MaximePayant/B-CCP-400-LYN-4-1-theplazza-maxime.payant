@@ -17,6 +17,7 @@
 
 #include "interfaces/IKitchen.hpp"
 #include "interfaces/ICooker.hpp"
+#include "communication/message.hpp"
 #include "chrono/Chrono.hpp"
 
 namespace plz
@@ -26,6 +27,7 @@ namespace plz
     {
 
         private:
+            Message m_messenger;
             const unsigned m_cookerCount;
             unsigned m_pizzaWaiting;
             unsigned m_pizzaCooking;
@@ -39,10 +41,11 @@ namespace plz
 
         public:
             Kitchen() = delete;
-            Kitchen(unsigned cookerCount);
+            Kitchen(unsigned cookerCount, unsigned id);
             ~Kitchen() override = default;
 
             bool cookPizza(PizzaType pizza) override;
+            void checkOrder(const std::string& message);
             unsigned getFreePlace() const override;
             PizzaType getNextOrder() override;
             bool gatherIngredient(plz::PizzaType type) override;

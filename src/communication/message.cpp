@@ -9,7 +9,7 @@
 #include <iostream>
 #include "communication/message.hpp"
 
-Message::Message(int proj_id) :
+plz::Message::Message(int proj_id) :
 m_key(-1),
 m_id(-1),
 m_message()
@@ -19,13 +19,13 @@ m_message()
     m_message.mesg_type = 1;
 }
 
-void Message::sendMessage(std::string& msg)
+void plz::Message::sendMessage(std::string& msg)
 {
     m_message.mesg_text =  msg.data();
     msgsnd(m_id, &m_message, sizeof(m_message), 0);
 }
 
-std::string Message::readMessage()
+std::string plz::Message::readMessage()
 {
     std::string buffer;
 
@@ -35,12 +35,12 @@ std::string Message::readMessage()
     return (buffer);
 }
 
-void operator<<(Message& obj, std::string& message)
+void operator<<(plz::Message& obj, std::string& message)
 {
     obj.sendMessage(message);
 }
 
-std::string operator*(Message& obj)
+std::string operator*(plz::Message& obj)
 {
     return (obj.readMessage());
 }

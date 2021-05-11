@@ -7,6 +7,16 @@
 
 #include "Kitchen.hpp"
 
+unsigned plz::Kitchen::getFreePlace() const
+{
+    return ((m_cookerCount * 2) - (m_pizzaWaiting + m_pizzaCooking));
+}
+
+void plz::Kitchen::checkOrder(const std::string& message)
+{
+    (void)message;
+}
+
 bool plz::Kitchen::cookPizza(PizzaType pizza)
 {
     if ((m_pizzaWaiting + m_pizzaCooking) + 1 > m_cookerCount * 2) {

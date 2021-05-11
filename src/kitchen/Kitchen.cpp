@@ -5,11 +5,15 @@
 ** Kitchen.cpp
 */
 
+#include <sys/types.h>
+#include <unistd.h>
+
 #include "Kitchen.hpp"
 #include "Cooker.hpp"
 
-plz::Kitchen::Kitchen(unsigned cookerCount)
-    :   m_cookerCount(cookerCount),
+plz::Kitchen::Kitchen(unsigned cookerCount, unsigned id)
+    :   m_messenger(id),
+        m_cookerCount(cookerCount),
         m_pizzaWaiting(0),
         m_pizzaCooking(0),
         m_mutex(),
@@ -32,24 +36,23 @@ plz::Kitchen::Kitchen(unsigned cookerCount)
         m_cookerList.push_back(std::make_unique<plz::Cooker>(*this));
 }
 
-unsigned plz::Kitchen::getFreePlace() const
-{
-    return ((m_cookerCount * 2) - (m_pizzaWaiting + m_pizzaCooking));
-}
-
 void plz::Kitchen::operator()()
 {
     static std::chrono::milliseconds waiting(1);
+    std::string message;
 
     m_deliveryTimer.start();
     while (m_isWorking) {
         std::this_thread::sleep_for(waiting);
-        if (m_serviceTimer.getElapsedTime() > 5)
-            m_isWorking = false;
+        message = m_messenger.readMessage();
         if (m_deliveryTimer.getElapsedTime() > 1) {
             for (auto& [_, count] : m_ingredientStock)
                 count += 1;
             m_deliveryTimer.start();
         }
+        if (m_serviceTimer.getElapsedTime() > 5)
+            m_isWorking = false;
+        else if (message.empty())
+            checkOrder(message);
     }
 }
