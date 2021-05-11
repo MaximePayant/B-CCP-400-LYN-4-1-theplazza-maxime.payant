@@ -5,58 +5,51 @@
 ** Reception
 */
 
+#include <thread>
+#include <unistd.h>
+
 #include "reception.hpp"
 #include "Kitchen.hpp"
 #include "shell.hpp"
 #include "communication/message.hpp"
 
-
-int plz::Reception::recupMessageStatus(Message message)
+plz::Reception::Reception()
+    :   m_listStatusKitchen(),
+        m_messengerList(),
+        m_listOrder(),
+        m_nbrKitchen(0)
 {
-    (void)message;
-    return (0);
+    createKitchen();
+}
+
+static unsigned getStatut(const std::string& message)
+{
+    if (message.empty())
+        return (0);
+    return (std::stoul(message));
 }
 
 void plz::Reception::checkStatusKitchen()
 {
-    std::string message("swdfx njlk,;");
+    std::string message("freePlace");
 
-    for (unsigned i = 0; i < m_nbrKitchen; i += 1){
-        m_listReceptionMessage.at(i).sendMessage(message);
-        std::cout << "Message sent! (" << message << ")" << std::endl;
-    }
-//    for (unsigned i = 0; i < m_nbrKitchen; i++)
-  //      listStatusKitchen.push_back(recupMessageStatus(listKitchenMessage.at(nbrKitchen)));
+    for (auto& messenger : m_messengerList)
+        messenger << message;
+    std::this_thread::sleep_for(std::chrono::milliseconds(2));
+    m_listStatusKitchen.erase(m_listStatusKitchen.begin(), m_listStatusKitchen.end());
+    for (auto& messenger : m_messengerList)
+        m_listStatusKitchen.push_back(getStatut(*messenger));
+}
 
-    Message reception_1(1);
-    Message kitchen_1(1);
-    Message reception_2(2);
-    Message kitchen_2(2);
-    std::string my_message("006");
-    std::string send("009");
+void plz::Reception::getStatus()
+{
+    std::string message("status");
 
-    int pid = fork();
-    if (pid == 0) {
-        std::string message;
-
-        message = *kitchen_1;
-        std::cout << "From reception(fork 1): " << "[" << message << "]" << std::endl;
-        //kitchen_1 << send;
-        exit(0);
-    }
-    pid = fork();
-    if (pid == 0) {
-        std::string message;
-
-        message = *kitchen_2;
-        std::cout << "From reception(fork 2): " << "[" << message << "]" << std::endl;
-        //kitchen << send;
-        exit(0);
-    }
-    reception_1 << send;
-    reception_2 << send;
-    std::cout << "From kitchen " << "[" << *reception_1 << "]" << std::endl;
-
+    for (auto& sender : m_messengerList)
+        sender << message;
+    std::this_thread::sleep_for(std::chrono::milliseconds(2));
+    for (auto& sender : m_messengerList)
+        std::cout << *sender << std::endl;
 }
 
 int plz::Reception::createKitchen()
@@ -70,14 +63,11 @@ int plz::Reception::createKitchen()
     else if (c_pid == 0) {
         plz::Kitchen kitchen(plz::Shell::cooksNumber, m_nbrKitchen);
         kitchen();
-        exit (0);
+        exit(0);
     }
     else {
-        Message receptionMess(m_nbrKitchen);
-        Message kitchenMess(m_nbrKitchen);
-        m_listReceptionMessage.push_back(receptionMess);
-        m_listKitchenMessage.push_back(kitchenMess);
-        m_listStatusKitchen.push_back(plz::Shell::cooksNumber);
+        m_messengerList.emplace_back(m_nbrKitchen, MSG_KITCHEN, MSG_RECEPTION);
+        m_listStatusKitchen.emplace_back(plz::Shell::cooksNumber);
         m_nbrKitchen += 1;
     }
     return (1);
@@ -85,65 +75,37 @@ int plz::Reception::createKitchen()
 
 int plz::Reception::findKitchen()
 {
-    int status = 0;
-    for(auto & elem : m_listStatusKitchen)
-        if (elem > status) {
-            status = elem;
+    int index = -1;
+
+    for(auto &elem : m_listStatusKitchen)
+        if (elem > index) {
+            index = elem;
             elem --;
         }
-    if (status == 0) {
+    if (index == -1) {
         createKitchen();
+        index = 0;
     }
-    return status;
+    return (index);
 }
 
-std::queue<plz::Order> plz::Reception::deleteOrder(std::queue<Order> listOrder)
+void plz::Reception::sendOrder(unsigned kitchenTarget, plz::PizzaType pizzaType)
 {
-    if (listOrder.front().count > 1) {
-        listOrder.front().count --;
-        return (listOrder);
-    }
-    if (listOrder.front().count == 1) {
-        listOrder.pop();
-        return (listOrder);
-    }
-    return (listOrder);
-}
-
-void plz::Reception::sendOrder(int kitchenTarget, int type)
-{
-    std::cout << type << std::endl;
     (void)kitchenTarget;
+    std::string type = inStringType(pizzaType);
+
+    m_messengerList.at(kitchenTarget).sendMessage(type);
 }
 
-int plz::Reception::exec(std::queue<Order> listOrder)
+int plz::Reception::takeOrder(plz::Order order)
 {
-    int kitchenTarget;
+    unsigned kitchenTarget;
     checkStatusKitchen();
 
-    std::cout << "nbrKitchen : " << m_nbrKitchen << std::endl
-                << "listReceptionMessage : " << m_listReceptionMessage.size() << std::endl
-                << "listKitchenMessage : " << m_listKitchenMessage.size() << std::endl;
-
-    while (listOrder.size() != 0) {
+    while (order.count > 0) {
         kitchenTarget = findKitchen();
-        sendOrder(kitchenTarget, listOrder.front().type);
-        listOrder = deleteOrder(listOrder);
+        sendOrder(kitchenTarget, order.type);
+        order.count -= 1;
     }
-    std::cout << std::endl;
     return (0);
-}
-
-plz::Reception::Reception()
-    :   m_listStatusKitchen(),
-        m_listReceptionMessage(),
-        m_listKitchenMessage(),
-        m_listOrder(),
-        m_nbrKitchen(0)
-{
-    createKitchen();
-}
-
-plz::Reception::~Reception()
-{
 }

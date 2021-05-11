@@ -5,6 +5,8 @@
 ** shell
 */
 
+#include <regex>
+
 #include "shell.hpp"
 
 float plz::Shell::cookerMultiplier = 0;
@@ -13,26 +15,23 @@ unsigned plz::Shell::refillTime = 0;
 
 plz::Shell::Shell(float cookerMultiplier, unsigned int cooksNumber, unsigned int refillTime)
 {
-    this->cookerMultiplier = cookerMultiplier;
-    this->cooksNumber = cooksNumber;
-    this->refillTime = refillTime;
+    cookerMultiplier = cookerMultiplier;
+    cooksNumber = cooksNumber;
+    refillTime = refillTime;
 }
 
-plz::Shell::~Shell()
+std::string plz::Shell::takeCommand() const
 {
-}
+    std::string command;
 
-
-std::string &plz::Shell::takeCommand(std::string &command)
-{
     std::getline(std::cin, command);
     command.push_back(';');
-    return command;
+    return (command);
 }
 
-void plz::Shell::verifyCommand(std::string &command)
+plz::Order plz::Shell::verifyCommand(std::string &command)
 {
-    Order order;
+    plz::Order order;
 
     std::regex words_regex("(\\s*?([a-zA-Z]+)\\s+(S|M|L|XL|XXL)\\s+x([1-9][0-9]*));");
     auto words_begin = std::sregex_iterator(command.begin(), command.end(), words_regex);
@@ -43,65 +42,43 @@ void plz::Shell::verifyCommand(std::string &command)
 
     for (std::sregex_iterator i = words_begin; i != words_end; ++i) {
         std::smatch match = *i;
-        std::string match_str = match.str();
+        //std::string match_str = match.str();
 
-        //std::cout << (*i)[2] << std::endl;
-        //std::cout << (*i)[3] << std::endl;
-        //std::cout << (*i)[4] << std::endl;
-        if ((*i)[2].compare("regina") == 0)
-            order.type = Regina;
-        else if ((*i)[2].compare("margarita") == 0)
-            order.type = Margarita;
-        else if ((*i)[2].compare("americana") == 0)
-            order.type = Americana;
-        else if ((*i)[2].compare("fantasia") == 0)
-            order.type = Fantasia;
-        else
-            throw "nom de la pizza inconue";
-        if ((*i)[3].compare("S") == 0)
-            order.size = S;
-        else if ((*i)[3].compare("M") == 0)
-            order.size = M;
-        else if ((*i)[3].compare("L") == 0)
-            order.size = L;
-        else if ((*i)[3].compare("XL") == 0)
-            order.size = XL;
-        else if ((*i)[3].compare("XXL") == 0)
-            order.size = XXL;
-        else
-            throw "taille de la pizza inconue";
-        order.count = std::stoi((*i)[4]);
-        listOrder.push(order);
-//        std::cout << "test " << order.count  << " " << order.size << " "  << order.type << std::endl;
-
-//// BUG AVEC regina XXL x2 americana S x4 // le ';' n'est pas demander.
+        order.type = inPizzaType(match[2]);
+        order.size = inPizzaSize(match[3]);
+        order.count = std::stoi(match[4]);
     }
+    return (order);
 }
 
-unsigned int plz::Shell::sendCommand(std::queue<Order> listOrder, plz::Reception *recep)
+void plz::Shell::exec()
 {
-    try {
-        recep->exec(listOrder);
-        while (!this->listOrder.empty())
-            this->listOrder.pop();
-        return (0);
-    }
-    catch (std::exception const &error){
-        std::cerr << error.what() << std::endl;
-        return (0);
-    }
-}
-
-unsigned int plz::Shell::exec()
-{
-    plz::Reception *recep = new plz::Reception();
+    bool isWorking = true;
+    plz::Reception reception;
+    plz::Order order;
     std::string command;
-    std::cout << "Wellcum Wellcum, bienvenue dans le restaurant \"la fine bouche\"\nnous vous proposons les meilleurs pizzas du pays\nfaites votre choix!\n\nPizza: regina, margarita, americana, fantasia.\nTaille: S, M, L, XL, XXL\n\n\"Mode d'emploie de commande:'nom de la pizza' 'taille' x'nombre de pizza'\"\nExample: \"regina XXL x2; fantasia M x3; margarita S x1\"" << std::endl;
-    while (1) {
-        std::cout << "\nPuis-je avoir votre commande ?\nChoix: ";
+
+    std::cout << "Wellcum Wellcum, bienvenue dans le restaurant \"la fine bouche\""   << std::endl
+              << "nous vous proposons les meilleurs pizzas du pays"                     << std::endl
+              << "faites votre choix!"                                                  << std::endl << std::endl
+              << "Pizza: regina, margarita, americana, fantasia."                       << std::endl
+              << "Taille: S, M, L, XL, XXL"                                             << std::endl << std::endl
+              << "\"Comment commander :'nom de la pizza' 'taille' x'nombre de pizza'\"" << std::endl
+              << "Example: \"regina XXL x2; fantasia M x3; margarita S x1\""            << std::endl;
+    while (isWorking) {
+        std::cout << "\nVous souhaiterez commander ?" << std::endl
+                  << "Choix: ";
         try {
-            verifyCommand(this->takeCommand(command));
-            sendCommand(this->listOrder, recep);
+            command = takeCommand();
+            if (command == "exit;")
+                isWorking = false;
+            else if (command == "status;")
+                reception.getStatus();
+            else {
+                order = verifyCommand(command);
+                reception.takeOrder(order);
+                std::cout << std::endl;
+            }
         }
         catch (const char *msg) {
             std::cerr << msg << std::endl;

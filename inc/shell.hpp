@@ -7,25 +7,34 @@
 
 #ifndef SHELL_HPP_
 #define SHELL_HPP_
+
+#include <queue>
+
 #include "plazza.hpp"
 #include "reception.hpp"
-namespace plz {
-    class Shell {
-        private:
-            std::string &takeCommand(std::string &command);
-            bool verifyPizza(const std::string &name);
-            void verifyCommand(std::string &command);
-            std::queue<Order> listOrder;
-        public:
 
+namespace plz
+{
+
+    class Shell
+    {
+
+        private:
+            std::string takeCommand() const;
+            plz::Order verifyCommand(std::string& command);
+
+        public:
             static float cookerMultiplier;
             static unsigned cooksNumber;
             static unsigned refillTime;
-            unsigned int exec();
-            unsigned int sendCommand(std::queue<Order> listOrder, plz::Reception *recep);
+
             Shell(float cookerMultiplier, unsigned cooksNumber, unsigned refillTime);
-            ~Shell();
-    };
-}
+            ~Shell() = default;
+
+            void exec();
+
+    }; // class Shell
+
+} // namespace plz
 
 #endif /* !SHELL_HPP_ */

@@ -6,35 +6,48 @@
 */
 
 #include <unistd.h>
+#include <string.h>
 #include <iostream>
 #include "communication/message.hpp"
+#include "errors/Communication.hpp"
 
-plz::Message::Message(int proj_id) :
+plz::Message::Message(int proj_id, int send_type, int rec_type) :
 m_key(-1),
 m_id(-1),
-m_message()
+m_Stype(send_type),
+m_Rtype(rec_type)
 {
     m_key = ftok("comFile", 60 + proj_id);
     m_id = msgget(m_key, 0666 | IPC_CREAT);
-    m_message.mesg_type = 1;
+    if (m_key == -1 || m_id == -1)
+        throw (plz::error::Communication("Message cannot been create!"));
+}
+
+plz::Message::~Message()
+{
+    msgctl(m_id, IPC_RMID, nullptr);
 }
 
 void plz::Message::sendMessage(std::string& msg)
 {
-    std::cout << "send id : " << m_id << std::endl;
-    m_message.mesg_text = msg.data();
-    msgsnd(m_id, &m_message, sizeof(m_message), 0);
+    plz::msg_buffer message{m_Stype, ""};
+    int result;
+
+    strcpy(message.mesg_text, msg.c_str());
+    result = msgsnd(m_id, &message, sizeof(message), 0);
+    if (result == -1) {
+        perror("msgsnd");
+        throw (plz::error::Communication("Message cannot been send!"));
+    }
 }
 
 std::string plz::Message::readMessage()
 {
+    plz::msg_buffer message{1, ""};
     std::string buffer;
 
-    std::cout << "read id : " << m_id << std::endl;
-    msgrcv(m_id, &m_message, sizeof(m_message), 1, 0);
-    std::cout << "From struct " << m_message.mesg_text << std::endl;
-    buffer = m_message.mesg_text;
-    msgctl(m_id, IPC_RMID, nullptr);
+    msgrcv(m_id, &message, sizeof(message), m_Rtype, IPC_NOWAIT);
+    buffer = message.mesg_text;
     return (buffer);
 }
 

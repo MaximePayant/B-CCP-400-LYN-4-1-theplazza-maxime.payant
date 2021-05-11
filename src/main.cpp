@@ -50,13 +50,12 @@ int main(int ac, char **av)
 
     try {
         plz::Shell shell(std::stof(av[1]), std::stoi(av[2]), std::stoi(av[3]));
-        unsigned ret = shell.exec();
-        return (ret);
+        shell.exec();
     }
     catch (std::exception const &error){
         std::cerr << error.what() << std::endl;
-        return (0);
     }
+    return (0);
 
     //std::cout << "From kitchen " << "[" << *reception << "]" << std::endl;
     /*plz::Kitchen kitchen(10);

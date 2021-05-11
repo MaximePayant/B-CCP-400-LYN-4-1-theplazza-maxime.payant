@@ -8,6 +8,9 @@
 #ifndef RECEPTION_HPP_
 #define RECEPTION_HPP_
 
+#include <vector>
+#include <queue>
+
 #include "plazza.hpp"
 #include "communication/message.hpp"
 
@@ -19,22 +22,20 @@ namespace plz
 
         private:
             std::vector<int> m_listStatusKitchen;
-            std::vector<Message> m_listReceptionMessage;
-            std::vector<Message> m_listKitchenMessage;
+            std::vector<Message> m_messengerList;
             std::queue<Order> m_listOrder;
             unsigned int m_nbrKitchen;
 
         public:
             void checkStatusKitchen();
+            void getStatus();
             int findKitchen();
-            void sendOrder(int kitchenTarget, int type);
-            std::queue<Order> deleteOrder(std::queue<Order> listOrder);
-            int exec(std::queue<Order> listOrder);
-            int recupMessageStatus(Message message);
+            void sendOrder(unsigned kitchenTarget, plz::PizzaType type);
+            int takeOrder(Order listOrder);
             int createKitchen();
 
             Reception();
-            ~Reception();
+            ~Reception() = default;
 
     }; // class Reception
 

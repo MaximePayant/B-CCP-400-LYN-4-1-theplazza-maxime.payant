@@ -5,6 +5,8 @@
 ** receptionCom.cpp
 */
 
+#include <sstream>
+
 #include "Kitchen.hpp"
 
 unsigned plz::Kitchen::getFreePlace() const
@@ -14,7 +16,29 @@ unsigned plz::Kitchen::getFreePlace() const
 
 void plz::Kitchen::checkOrder(const std::string& message)
 {
-    std::cout << "Message : <" << message << "> " << message.size() << std::endl;
+    //std::cout << "Kitchen recieve : <" << message << ">" << std::endl;
+    if (message == "status") {
+        std::stringstream sstream;
+        sstream << "Cookers: "       << m_cookerCount  << std::endl
+                << "Free place: "    << getFreePlace() << std::endl
+                << "Pizza cooking: " << m_pizzaCooking << std::endl
+                << "Pizza waiting: " << m_pizzaWaiting << std::endl;
+        for (auto& [ing, count] : m_ingredientStock)
+            sstream << ing << ": " << count << std::endl;
+        sstream << "Next delivery in: "  << m_deliveryTimer.getElapsedTime() << std::endl;
+        if (m_isWorking)
+            sstream << "End of service in: NEVER!" << std::endl;
+        else
+            sstream << "End of service in: " << m_serviceTimer.getElapsedTime() << std::endl;
+        std::string str = sstream.str();
+        m_messenger << str;
+    }
+    else if (message == "freePlace") {
+        std::string str = std::to_string(getFreePlace()) + ";";
+        m_messenger << str;
+    }
+    else
+        cookPizza(inPizzaType(message));
 }
 
 bool plz::Kitchen::cookPizza(PizzaType pizza)

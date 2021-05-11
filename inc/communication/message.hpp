@@ -15,20 +15,24 @@
 namespace plz
 {
 
+    struct msg_buffer {
+        long mesg_type;
+        char mesg_text[500];
+    };
+
     class Message
     {
 
         private:
-            key_t m_key;
+            int m_key;
             int m_id;
-            struct msg_buffer {
-                long mesg_type;
-                char *mesg_text;
-            } m_message;
+            int m_Stype;
+            int m_Rtype;
+
         public:
-            Message(int proj_id);
+            Message(int proj_id, int send_type, int rec_type);
             Message() = delete;
-            ~Message() = default;
+            ~Message();
             void sendMessage(std::string& message);
             std::string readMessage();
 
