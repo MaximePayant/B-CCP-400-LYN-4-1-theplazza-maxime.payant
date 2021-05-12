@@ -41,7 +41,7 @@ namespace plz
 
         public:
             Kitchen() = delete;
-            Kitchen(unsigned cookerCount, unsigned id);
+            Kitchen(unsigned id);
             ~Kitchen() override = default;
 
             bool cookPizza(PizzaType pizza) override;

@@ -19,13 +19,12 @@ plz::Reception::Reception()
         m_listOrder(),
         m_nbrKitchen(0)
 {
-    createKitchen();
 }
 
-static unsigned getStatut(const std::string& message)
+static int getStatut(const std::string& message)
 {
     if (message.empty())
-        return (0);
+        return (-1);
     return (std::stoul(message));
 }
 
@@ -37,14 +36,21 @@ void plz::Reception::checkStatusKitchen()
         messenger << message;
     std::this_thread::sleep_for(std::chrono::milliseconds(2));
     m_listStatusKitchen.erase(m_listStatusKitchen.begin(), m_listStatusKitchen.end());
-    for (auto& messenger : m_messengerList)
-        m_listStatusKitchen.push_back(getStatut(*messenger));
+    for (int ctr = 0; auto& messenger : m_messengerList) {
+        int statut = getStatut(*messenger);
+        if (statut == -1)
+            m_messengerList.erase(m_messengerList.begin() + (ctr - 1));
+        else
+            m_listStatusKitchen.push_back(statut);
+        ctr += 1;
+    }
 }
 
 void plz::Reception::getStatus()
 {
     std::string message("status");
 
+    checkStatusKitchen();
     for (auto& sender : m_messengerList)
         sender << message;
     std::this_thread::sleep_for(std::chrono::milliseconds(2));
@@ -61,7 +67,7 @@ int plz::Reception::createKitchen()
         exit(EXIT_FAILURE);
     }
     else if (c_pid == 0) {
-        plz::Kitchen kitchen(plz::Shell::cooksNumber, m_nbrKitchen);
+        plz::Kitchen kitchen(m_nbrKitchen);
         kitchen();
         exit(0);
     }
@@ -91,7 +97,6 @@ int plz::Reception::findKitchen()
 
 void plz::Reception::sendOrder(unsigned kitchenTarget, plz::PizzaType pizzaType)
 {
-    (void)kitchenTarget;
     std::string type = inStringType(pizzaType);
 
     m_messengerList.at(kitchenTarget).sendMessage(type);

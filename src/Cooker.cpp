@@ -6,6 +6,7 @@
 */
 
 #include "Cooker.hpp"
+#include "shell.hpp"
 
 plz::Cooker::Cooker(IKitchen& kitchen)
     :   m_kitchen(kitchen),
@@ -33,7 +34,7 @@ void plz::Cooker::workHard()
         }
     }
     if (m_statut == Cooking) {
-        while (m_timer.getElapsedTime() < plz::pizzaTime[m_order])
+        while (m_timer.getElapsedTime() < plz::pizzaTime[m_order] * plz::Shell::cookerMultiplier)
             std::this_thread::sleep_for(waiting);
         m_kitchen.finishPizza();
         m_statut = HasNothing;

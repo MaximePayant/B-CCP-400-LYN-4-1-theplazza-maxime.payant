@@ -13,11 +13,11 @@ float plz::Shell::cookerMultiplier = 0;
 unsigned plz::Shell::cooksNumber = 0;
 unsigned plz::Shell::refillTime = 0;
 
-plz::Shell::Shell(float cookerMultiplier, unsigned int cooksNumber, unsigned int refillTime)
+plz::Shell::Shell(float cookerMultiplierVal, unsigned int cooksNumberVal, unsigned int refillTimeVal)
 {
-    cookerMultiplier = cookerMultiplier;
-    cooksNumber = cooksNumber;
-    refillTime = refillTime;
+    cookerMultiplier = cookerMultiplierVal;
+    cooksNumber = cooksNumberVal;
+    refillTime = refillTimeVal;
 }
 
 std::string plz::Shell::takeCommand() const
@@ -58,7 +58,7 @@ void plz::Shell::exec()
     plz::Order order;
     std::string command;
 
-    std::cout << "Wellcum Wellcum, bienvenue dans le restaurant \"la fine bouche\""   << std::endl
+    std::cout << "Wellcum Wellcum, bienvenue dans le restaurant \"la fine bouche\""     << std::endl
               << "nous vous proposons les meilleurs pizzas du pays"                     << std::endl
               << "faites votre choix!"                                                  << std::endl << std::endl
               << "Pizza: regina, margarita, americana, fantasia."                       << std::endl

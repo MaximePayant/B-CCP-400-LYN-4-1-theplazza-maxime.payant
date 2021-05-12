@@ -36,7 +36,7 @@ plz::PizzaType plz::Kitchen::getNextOrder()
     if (!gatherIngredient(order) || order == plz::PizzaType::Nothing)
         return (plz::PizzaType::Nothing);
     m_pizzaQueue.pop();
-    m_pizzaWaiting -= 1;
+    m_pizzaWaiting -= (!m_pizzaWaiting ? 0 : 1);
     m_pizzaCooking += 1;
     return (order);
 }
@@ -45,7 +45,7 @@ void plz::Kitchen::finishPizza()
 {
     std::unique_lock<std::mutex> locker(m_mutex);
 
-    m_pizzaCooking -= 1;
+    m_pizzaCooking -= (!m_pizzaCooking ? 0 : 1);
     if (!m_pizzaWaiting
     && !m_pizzaCooking)
         m_serviceTimer.start();
