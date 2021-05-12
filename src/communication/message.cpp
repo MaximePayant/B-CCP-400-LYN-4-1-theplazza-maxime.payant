@@ -34,7 +34,7 @@ void plz::Message::sendMessage(std::string& msg)
     int result;
 
     strcpy(message.mesg_text, msg.c_str());
-    result = msgsnd(m_id, &message, sizeof(message), 0);
+    result = msgsnd(m_id, &message, sizeof(message.mesg_text), 0);
     if (result == -1) {
         perror("msgsnd");
         throw (plz::error::Communication("Message cannot been send!"));
@@ -46,7 +46,7 @@ std::string plz::Message::readMessage()
     plz::msg_buffer message{1, ""};
     std::string buffer;
 
-    msgrcv(m_id, &message, sizeof(message), m_Rtype, IPC_NOWAIT);
+    msgrcv(m_id, &message, sizeof(message.mesg_text), m_Rtype, IPC_NOWAIT);
     buffer = message.mesg_text;
     return (buffer);
 }

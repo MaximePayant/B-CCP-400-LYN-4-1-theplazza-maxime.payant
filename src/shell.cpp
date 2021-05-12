@@ -58,7 +58,7 @@ void plz::Shell::exec()
     plz::Order order;
     std::string command;
 
-    std::cout << "Wellcum Wellcum, bienvenue dans le restaurant \"la fine bouche\""     << std::endl
+    std::cout << "Wellcome Wellcome, bienvenue dans le restaurant \"la fine bouche\""   << std::endl
               << "nous vous proposons les meilleurs pizzas du pays"                     << std::endl
               << "faites votre choix!"                                                  << std::endl << std::endl
               << "Pizza: regina, margarita, americana, fantasia."                       << std::endl
