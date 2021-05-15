@@ -13,7 +13,8 @@
 #include "shell.hpp"
 
 plz::Kitchen::Kitchen(unsigned id)
-    :   m_messenger(id, MSG_RECEPTION, MSG_KITCHEN),
+    :   m_id(id),
+        m_messenger(id, MSG_RECEPTION, MSG_KITCHEN),
         m_cookerCount(plz::Shell::cooksNumber),
         m_pizzaWaiting(0),
         m_pizzaCooking(0),
@@ -31,7 +32,8 @@ plz::Kitchen::Kitchen(unsigned id)
         },
         m_serviceTimer(plz::Chrono::Wait),
         m_deliveryTimer(plz::Chrono::Wait),
-        m_isWorking(true)
+        m_isWorking(true),
+        m_pizzaCooked(0)
 {
     for (unsigned ctr = 0; ctr < m_cookerCount; ctr += 1)
         m_cookerList.push_back(std::make_unique<plz::Cooker>(*this));
@@ -51,10 +53,8 @@ void plz::Kitchen::operator()()
                 count += 1;
             m_deliveryTimer.start();
         }
-        if (m_serviceTimer.getElapsedTime() > 5) {
-            std::cout << "End of service !" << std::endl;
+        if (m_serviceTimer.getElapsedTime() > 5)
             m_isWorking = false;
-        }
         else if (!message.empty())
             checkOrder(message);
     }

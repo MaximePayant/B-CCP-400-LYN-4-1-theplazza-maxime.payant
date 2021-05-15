@@ -14,70 +14,31 @@
 #include "Kitchen.hpp"
 #include "chrono/Chrono.hpp"
 
+void helpCase()
+{
+    std::cout   << "USAGE" << std::endl
+                << "\t./plazza [a] [b] [c]" << std::endl << std::endl
+                << "DESCRIPTION" << std::endl
+                << "\t[a] is a cooking time multiplier. It is able to accept value between 0 to 1 to obtain a divisor of the pizza cooking time ;" << std::endl
+                << "\t[b] is the number of cooker per kitchen ;" << std::endl
+                << "\t[c] is the delivery time for ingredient. Each [c] millisecond, the stock of all ingredient would be refill by 1." << std::endl;
+}
+
 int main(int ac, char **av)
 {
-    /*
-    plz::Message reception_1(1);
-    plz::Message kitchen_1(1);
-    plz::Message reception_2(2);
-    plz::Message kitchen_2(2);
-    std::string my_message("006");
-    std::string send("009");
-
-    int pid = fork();
-    if (pid == 0) {
-        std::string message;
-
-        message = *kitchen_1;
-        std::cout << "From reception(fork 1): " << "[" << message << "]" << std::endl;
-        //kitchen << send;
-        exit(0);
+    if (ac < 4) {
+        helpCase();
+        if (ac == 2
+        && (std::string(av[1]) == "-h" || std::string(av[1]) == "--help"))
+            return (0);
+        return (84);
     }
-    pid = fork();
-    if (pid == 0) {
-        std::string message;
-
-        message = *kitchen_2;
-        std::cout << "From reception(fork 2): " << "[" << message << "]" << std::endl;
-        //kitchen << send;
-        exit(0);
-    }
-    reception_1 << my_message;
-    reception_2 << send;
-    */
-
-    (void)ac;
-
     try {
         plz::Shell shell(std::stof(av[1]), std::stoi(av[2]), std::stoi(av[3]));
         shell.exec();
     }
-    catch (std::exception const &error){
+    catch (std::exception const &error) {
         std::cerr << error.what() << std::endl;
     }
     return (0);
-
-    //std::cout << "From kitchen " << "[" << *reception << "]" << std::endl;
-    /*plz::Kitchen kitchen(10);
-    plz::Chrono timer;
-
-    for (int ctr = 0; ctr < 20;) {
-        kitchen.cookPizza(plz::PizzaType::Americana);
-        ctr += 1;
-    }
-    kitchen();*/
-
-    /*
-    plz::Shell *shell = NULL;
-    try {
-        shell = new plz::Shell(std::stof(av[1]), std::stoi(av[2]), std::stoi(av[3]));
-        unsigned ret = shell->exec();
-        delete (shell);
-        return (ret);
-    }
-    catch (std::exception const &error){
-        std::cerr << error.what() << std::endl;
-        return (0);
-    }
-    */
 }

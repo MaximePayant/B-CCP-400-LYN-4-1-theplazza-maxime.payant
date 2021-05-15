@@ -27,6 +27,7 @@ namespace plz
     {
 
         private:
+            const unsigned m_id;
             Message m_messenger;
             const unsigned m_cookerCount;
             unsigned m_pizzaWaiting;
@@ -38,6 +39,7 @@ namespace plz
             plz::Chrono m_serviceTimer;
             plz::Chrono m_deliveryTimer;
             bool m_isWorking;
+            unsigned m_pizzaCooked;
 
         public:
             Kitchen() = delete;

@@ -16,13 +16,13 @@ unsigned plz::Kitchen::getFreePlace() const
 
 void plz::Kitchen::checkOrder(const std::string& message)
 {
-    //std::cout << "Kitchen recieve : <" << message << ">" << std::endl;
     if (message == "status") {
         std::stringstream sstream;
         sstream << "Cookers: "       << m_cookerCount  << std::endl
                 << "Free place: "    << getFreePlace() << std::endl
                 << "Pizza cooking: " << m_pizzaCooking << std::endl
-                << "Pizza waiting: " << m_pizzaWaiting << std::endl;
+                << "Pizza waiting: " << m_pizzaWaiting << std::endl
+                << "Pizza cooked: "  << m_pizzaCooked << std::endl;
         for (auto& [ing, count] : m_ingredientStock)
             sstream << ing << ": " << count << std::endl;
         sstream << "Next delivery in: "  << m_deliveryTimer.getElapsedTime() << std::endl;
@@ -41,14 +41,14 @@ void plz::Kitchen::checkOrder(const std::string& message)
         cookPizza(inPizzaType(message));
 }
 
-bool plz::Kitchen::cookPizza(PizzaType pizza)
+bool plz::Kitchen::cookPizza(plz::PizzaType pizza)
 {
+    std::unique_lock<std::mutex> locker(m_mutex);
+
     if ((m_pizzaWaiting + m_pizzaCooking) + 1 > m_cookerCount * 2) {
         std::cerr << "Can't cook the pizza, the kitchen is full." << std::endl;
         return (false);
     }
-
-    std::unique_lock<std::mutex> locker(m_mutex);
 
     m_pizzaWaiting += 1;
     m_pizzaQueue.push(pizza);

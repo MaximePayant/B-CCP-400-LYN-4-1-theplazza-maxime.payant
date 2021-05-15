@@ -32,19 +32,22 @@ void plz::Reception::checkStatusKitchen()
 {
     std::string message("freePlace");
 
-    //std::cout << "Size messanger list: " << m_messengerList.size() << std::endl;
+    m_listStatusKitchen.erase(m_listStatusKitchen.begin(), m_listStatusKitchen.end());
     for (auto& messenger : m_messengerList)
         messenger << message;
+
     std::this_thread::sleep_for(std::chrono::milliseconds(2));
-    m_listStatusKitchen.erase(m_listStatusKitchen.begin(), m_listStatusKitchen.end());
+
     for (auto it = m_messengerList.begin(); auto& messenger : m_messengerList) {
         int statut = getStatut(*messenger);
-        //std::cout << "Statut n°" << ctr << " - " << statut << std::endl;
-        if (statut == -1)
-            m_messengerList.erase(it);
-        else
+        if (statut == -1) {
+            it = m_messengerList.erase(it);
+            m_nbrKitchen -= 1;
+        }
+        else {
             m_listStatusKitchen.push_back(statut);
-        it++;
+            it++;
+        }
     }
 }
 
@@ -53,11 +56,13 @@ void plz::Reception::getStatus()
     std::string message("status");
 
     checkStatusKitchen();
-    for (auto& sender : m_messengerList)
-        sender << message;
+    for (auto& messenger : m_messengerList)
+        messenger << message;
+
     std::this_thread::sleep_for(std::chrono::milliseconds(2));
-    for (auto& sender : m_messengerList)
-        std::cout << *sender << std::endl;
+
+    for (auto& messenger : m_messengerList)
+        std::cout << *messenger << std::endl;
 }
 
 int plz::Reception::createKitchen()
@@ -85,14 +90,13 @@ int plz::Reception::findKitchen()
 {
     int index = -1;
 
-    //std::cout << "Size statut list: " << m_listStatusKitchen.size() << std::endl;
     for(int ctr = 0; auto &elem : m_listStatusKitchen) {
-        //std::cout << "lol" << std::endl;
-        if (elem > index)
+        if (elem > index) {
             index = ctr;
+            elem -= 1;
+        }
         ctr += 1;
     }
-    //std::cout << "index: " << index << std::endl;
     if (index == -1) {
         createKitchen();
         index = 0;
@@ -110,12 +114,13 @@ void plz::Reception::sendOrder(unsigned kitchenTarget, plz::PizzaType pizzaType)
 int plz::Reception::takeOrder(plz::Order order)
 {
     unsigned kitchenTarget;
+    checkStatusKitchen();
 
     while (order.count > 0) {
-        checkStatusKitchen();
         kitchenTarget = findKitchen();
         sendOrder(kitchenTarget, order.type);
         order.count -= 1;
+        std::this_thread::sleep_for(std::chrono::milliseconds(2));
     }
     return (0);
 }

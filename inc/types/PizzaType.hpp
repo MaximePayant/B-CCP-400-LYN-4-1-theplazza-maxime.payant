@@ -14,7 +14,7 @@
 namespace plz
 {
 
-    enum class PizzaType
+    enum PizzaType
     {
         Nothing   = 0,
         Regina    = 1,
@@ -33,6 +33,8 @@ inline std::ostream& operator<<(std::ostream& os, const plz::PizzaType& type)
         case plz::PizzaType::Margarita: os << "Margarita"; break;
         case plz::PizzaType::Americana: os << "Americana"; break;
         case plz::PizzaType::Fantasia:  os << "Fantasia";  break;
+        default:
+            os << static_cast<int>(type); break;
     }
     return (os);
 }
