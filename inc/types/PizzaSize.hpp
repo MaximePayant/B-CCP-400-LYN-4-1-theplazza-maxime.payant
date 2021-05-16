@@ -30,6 +30,8 @@ namespace plz
                 case PizzaSize::L:   os << "L";   break;
                 case PizzaSize::XL:  os << "XL";  break;
                 case PizzaSize::XXL: os << "XXL"; break;
+                default:
+                    os << static_cast<int>(size); break;
             }
             return (os);
         }

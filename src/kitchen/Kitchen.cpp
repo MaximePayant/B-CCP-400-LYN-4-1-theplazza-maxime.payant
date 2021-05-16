@@ -21,20 +21,14 @@ plz::Kitchen::Kitchen(unsigned id)
         m_mutex(),
         m_pizzaQueue(),
         m_cookerList(),
-        m_ingredientStock{
-            {Tomato, 5},
-            {Gruyere, 5},
-            {Ham, 5},
-            {Mushrooms, 5},
-            {Steak, 5},
-            {GoatCheese, 5},
-            {EggPlant, 5}
-        },
+        m_ingredientStock{},
         m_serviceTimer(plz::Chrono::Wait),
         m_deliveryTimer(plz::Chrono::Wait),
         m_isWorking(true),
         m_pizzaCooked(0)
 {
+    for (int ctr = 0; ctr < plz::Ingredient::END; ctr += 1)
+        m_ingredientStock[static_cast<plz::Ingredient>(ctr)] = 5;
     for (unsigned ctr = 0; ctr < m_cookerCount; ctr += 1)
         m_cookerList.push_back(std::make_unique<plz::Cooker>(*this));
 }
