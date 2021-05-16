@@ -25,21 +25,22 @@ namespace plz
         ChiefLove
     };
 
+    inline std::ostream& operator<<(std::ostream& os, const Ingredient& type)
+    {
+        switch (type) {
+            case Ingredient::Tomato:     os << "Tomato";     break;
+            case Ingredient::Gruyere:    os << "Gruyere";    break;
+            case Ingredient::Ham:        os << "Ham";        break;
+            case Ingredient::Mushrooms:  os << "Mushrooms";  break;
+            case Ingredient::Steak:      os << "Steak";      break;
+            case Ingredient::GoatCheese: os << "GoatCheese"; break;
+            case Ingredient::EggPlant:   os << "EggPlant";   break;
+            case Ingredient::ChiefLove:  os << "ChiefLove";  break;
+        }
+        return (os);
+    }
+
 } // namespace plz
 
-inline std::ostream& operator<<(std::ostream& os, const plz::Ingredient& type)
-{
-    switch (type) {
-        case plz::Ingredient::Tomato:     os << "Tomato";     break;
-        case plz::Ingredient::Gruyere:    os << "Gruyere";    break;
-        case plz::Ingredient::Ham:        os << "Ham";        break;
-        case plz::Ingredient::Mushrooms:  os << "Mushrooms";  break;
-        case plz::Ingredient::Steak:      os << "Steak";      break;
-        case plz::Ingredient::GoatCheese: os << "GoatCheese"; break;
-        case plz::Ingredient::EggPlant:   os << "EggPlant";   break;
-        case plz::Ingredient::ChiefLove:  os << "ChiefLove";  break;
-    }
-    return (os);
-}
 
 #endif // __INGREDIENT_H__

@@ -23,54 +23,54 @@ namespace plz
         Fantasia  = 8
     };
 
-}
-
-inline std::ostream& operator<<(std::ostream& os, const plz::PizzaType& type)
-{
-    switch (type) {
-        case plz::PizzaType::Nothing:   os << "Nothing";   break;
-        case plz::PizzaType::Regina:    os << "Regina";    break;
-        case plz::PizzaType::Margarita: os << "Margarita"; break;
-        case plz::PizzaType::Americana: os << "Americana"; break;
-        case plz::PizzaType::Fantasia:  os << "Fantasia";  break;
-        default:
-            os << static_cast<int>(type); break;
+    inline std::ostream& operator<<(std::ostream& os, const PizzaType& type)
+    {
+        switch (type) {
+            case PizzaType::Nothing:   os << "Nothing";   break;
+            case PizzaType::Regina:    os << "Regina";    break;
+            case PizzaType::Margarita: os << "Margarita"; break;
+            case PizzaType::Americana: os << "Americana"; break;
+            case PizzaType::Fantasia:  os << "Fantasia";  break;
+            default:
+                os << static_cast<int>(type); break;
+        }
+        return (os);
     }
-    return (os);
-}
 
-inline plz::PizzaType inPizzaType(const std::string& value)
-{
-    static const std::unordered_map<std::string, plz::PizzaType> reference =
+    inline PizzaType inPizzaType(const std::string& value)
     {
-        {"regina",    plz::PizzaType::Regina},
-        {"margarita", plz::PizzaType::Margarita},
-        {"americana", plz::PizzaType::Americana},
-        {"fantasia",  plz::PizzaType::Fantasia}
-    };
+        static const std::unordered_map<std::string, PizzaType> reference =
+        {
+            {"regina",    PizzaType::Regina},
+            {"margarita", PizzaType::Margarita},
+            {"americana", PizzaType::Americana},
+            {"fantasia",  PizzaType::Fantasia}
+        };
 
-    auto it = reference.find(value);
+        auto it = reference.find(value);
 
-    if (it == reference.end())
-        throw std::exception();
-    return (it->second);
-}
+        if (it == reference.end())
+            throw std::exception();
+        return (it->second);
+    }
 
-inline std::string inStringType(const plz::PizzaType& value)
-{
-    static const std::unordered_map<plz::PizzaType, std::string> reference =
+    inline std::string inStringType(const PizzaType& value)
     {
-        {plz::PizzaType::Regina,    "regina"},
-        {plz::PizzaType::Margarita, "margarita"},
-        {plz::PizzaType::Americana, "americana"},
-        {plz::PizzaType::Fantasia,  "fantasia"}
-    };
+        static const std::unordered_map<PizzaType, std::string> reference =
+        {
+            {PizzaType::Regina,    "regina"},
+            {PizzaType::Margarita, "margarita"},
+            {PizzaType::Americana, "americana"},
+            {PizzaType::Fantasia,  "fantasia"}
+        };
 
-    auto it = reference.find(value);
+        auto it = reference.find(value);
 
-    if (it == reference.end())
-        throw std::exception();
-    return (it->second);
-}
+        if (it == reference.end())
+            throw std::exception();
+        return (it->second);
+    }
+
+} // namespace plz
 
 #endif // __PIZZATYPE_H__

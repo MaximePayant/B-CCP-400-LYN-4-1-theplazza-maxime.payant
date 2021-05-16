@@ -33,6 +33,7 @@ void plz::Message::sendMessage(std::string& msg)
     plz::msg_buffer message{m_Stype, ""};
     int result;
 
+    std::cout << "Try to send <" << msg << ">" << std::endl;
     strcpy(message.mesg_text, msg.c_str());
     result = msgsnd(m_id, &message, sizeof(message.mesg_text), 0);
     if (result == -1) {
@@ -51,10 +52,25 @@ std::string plz::Message::readMessage()
     return (buffer);
 }
 
+/*
+void plz::operator<<(std::ostream& os, plz::Message& obj)
+{
+    os << "Key: " << obj.m_key << std::endl
+       << "Id: " << obj.m_id << std::endl
+       << "Stype: " << obj.m_Stype << std::endl
+       << "Rtype: " << obj.m_Rtype << std::endl;
+}
+
 void operator<<(plz::Message& obj, std::string& message)
 {
     obj.sendMessage(message);
 }
+
+void operator>>(plz::Message& obj, std::string& message)
+{
+    message = obj.readMessage();
+}
+*/
 
 std::string operator*(plz::Message& obj)
 {

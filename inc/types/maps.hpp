@@ -32,6 +32,6 @@ namespace plz
         {PizzaType::Fantasia,  {Ingredient::Tomato, Ingredient::EggPlant, Ingredient::GoatCheese, Ingredient::ChiefLove}}
     };
 
-}
+} // namespace plz
 
 #endif // __MAPS_H__

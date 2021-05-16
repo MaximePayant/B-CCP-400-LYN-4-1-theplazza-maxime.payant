@@ -36,11 +36,26 @@ namespace plz
             void sendMessage(std::string& message);
             std::string readMessage();
 
+        friend void operator<<(std::ostream& os, Message& obj);
+
     }; // class Message
+
+    inline void operator<<(std::ostream& os, Message& obj)
+    {
+        os << "Key: " << obj.m_key << std::endl
+           << "Id: " << obj.m_id << std::endl
+           << "Stype: " << obj.m_Stype << std::endl
+           << "Rtype: " << obj.m_Rtype << std::endl;
+    }
+
+    inline void operator<<(plz::Message& obj, std::string& message)
+    {
+        obj.sendMessage(message);
+    }
 
 } // namespace plz
 
-void operator<<(plz::Message& obj, std::string& message);
+
 std::string operator*(plz::Message &obj);
 
 #endif //MESSAGE

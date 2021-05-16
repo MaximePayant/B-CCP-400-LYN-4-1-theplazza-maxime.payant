@@ -18,8 +18,7 @@ plz::Reception::Reception()
         m_messengerList(),
         m_listOrder(),
         m_nbrKitchen(0)
-{
-}
+{}
 
 static int getStatut(const std::string& message)
 {
@@ -33,8 +32,13 @@ void plz::Reception::checkStatusKitchen()
     std::string message("freePlace");
 
     m_listStatusKitchen.erase(m_listStatusKitchen.begin(), m_listStatusKitchen.end());
-    for (auto& messenger : m_messengerList)
+    std::cout << "messengerList size : " << m_messengerList.size() << std::endl;
+    for (int ctr = 0; auto& messenger : m_messengerList) {
+        std::cout << "Send message to kitchen n°" << ctr << " to get status" << std::endl;
+        std::cout << "Reception:" << std::endl << messenger;
         messenger << message;
+        ctr += 1;
+    }
 
     std::this_thread::sleep_for(std::chrono::milliseconds(2));
 
@@ -80,7 +84,6 @@ int plz::Reception::createKitchen()
     }
     else {
         m_messengerList.emplace_back(m_nbrKitchen, MSG_KITCHEN, MSG_RECEPTION);
-        m_listStatusKitchen.emplace_back(plz::Shell::cooksNumber);
         m_nbrKitchen += 1;
     }
     return (1);
@@ -89,17 +92,20 @@ int plz::Reception::createKitchen()
 int plz::Reception::findKitchen()
 {
     int index = -1;
+    int idxVal = -1;
 
     for(int ctr = 0; auto &elem : m_listStatusKitchen) {
-        if (elem > index) {
+        std::cout << elem << " free place for kitchen n°" << ctr << std::endl;
+        if (elem > 0 && elem > idxVal) {
+            idxVal = elem;
             index = ctr;
-            elem -= 1;
         }
         ctr += 1;
     }
     if (index == -1) {
+        std::cout << "Create kitchen" << std::endl;
+        index = m_nbrKitchen;
         createKitchen();
-        index = 0;
     }
     return (index);
 }
@@ -108,18 +114,23 @@ void plz::Reception::sendOrder(unsigned kitchenTarget, plz::PizzaType pizzaType)
 {
     std::string type = inStringType(pizzaType);
 
+    std::cout << "Order a " << type << " for kitchen n°" << kitchenTarget << std::endl;
     m_messengerList.at(kitchenTarget).sendMessage(type);
 }
 
 int plz::Reception::takeOrder(plz::Order order)
 {
     unsigned kitchenTarget;
-    checkStatusKitchen();
+
+    std::cout << "Order " << order.count << " " << order.type << std::endl;
 
     while (order.count > 0) {
+        checkStatusKitchen();
         kitchenTarget = findKitchen();
         sendOrder(kitchenTarget, order.type);
+        std::cout << "Sent" << std::endl;
         order.count -= 1;
+        std::cout << "----------" << std::endl;
         std::this_thread::sleep_for(std::chrono::milliseconds(2));
     }
     return (0);

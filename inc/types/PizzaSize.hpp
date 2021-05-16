@@ -22,54 +22,54 @@ namespace plz
         XXL = 16
     };
 
-}
-
-inline std::ostream& operator<<(std::ostream& os, const plz::PizzaSize& size)
-    {
-        switch (size) {
-            case plz::PizzaSize::S:   os << "S";   break;
-            case plz::PizzaSize::M:   os << "M";   break;
-            case plz::PizzaSize::L:   os << "L";   break;
-            case plz::PizzaSize::XL:  os << "XL";  break;
-            case plz::PizzaSize::XXL: os << "XXL"; break;
+    inline std::ostream& operator<<(std::ostream& os, const PizzaSize& size)
+        {
+            switch (size) {
+                case PizzaSize::S:   os << "S";   break;
+                case PizzaSize::M:   os << "M";   break;
+                case PizzaSize::L:   os << "L";   break;
+                case PizzaSize::XL:  os << "XL";  break;
+                case PizzaSize::XXL: os << "XXL"; break;
+            }
+            return (os);
         }
-        return (os);
+
+    inline PizzaSize inPizzaSize(const std::string& value)
+    {
+        static const std::unordered_map<std::string, PizzaSize> reference =
+        {
+            {"S",   PizzaSize::S},
+            {"M",   PizzaSize::M},
+            {"L",   PizzaSize::L},
+            {"XL",  PizzaSize::XL},
+            {"XXL", PizzaSize::XXL}
+        };
+
+        auto it = reference.find(value);
+
+        if (it == reference.end())
+            throw std::exception();
+        return (it->second);
     }
 
-inline plz::PizzaSize inPizzaSize(const std::string& value)
-{
-    static const std::unordered_map<std::string, plz::PizzaSize> reference =
+    inline std::string inStringSize(const PizzaSize& value)
     {
-        {"S",   plz::PizzaSize::S},
-        {"M",   plz::PizzaSize::M},
-        {"L",   plz::PizzaSize::L},
-        {"XL",  plz::PizzaSize::XL},
-        {"XXL", plz::PizzaSize::XXL}
-    };
+        static const std::unordered_map<PizzaSize, std::string> reference =
+        {
+            {PizzaSize::S,   "S"},
+            {PizzaSize::M,   "M"},
+            {PizzaSize::L,   "L"},
+            {PizzaSize::XL,  "XL"},
+            {PizzaSize::XXL, "XXL"}
+        };
 
-    auto it = reference.find(value);
+        auto it = reference.find(value);
 
-    if (it == reference.end())
-        throw std::exception();
-    return (it->second);
-}
+        if (it == reference.end())
+            throw std::exception();
+        return (it->second);
+    }
 
-inline std::string inStringSize(const plz::PizzaSize& value)
-{
-    static const std::unordered_map<plz::PizzaSize, std::string> reference =
-    {
-        {plz::PizzaSize::S,   "S"},
-        {plz::PizzaSize::M,   "M"},
-        {plz::PizzaSize::L,   "L"},
-        {plz::PizzaSize::XL,  "XL"},
-        {plz::PizzaSize::XXL, "XXL"}
-    };
-
-    auto it = reference.find(value);
-
-    if (it == reference.end())
-        throw std::exception();
-    return (it->second);
-}
+} // namespace plz
 
 #endif // __PIZZASIZE_H__
