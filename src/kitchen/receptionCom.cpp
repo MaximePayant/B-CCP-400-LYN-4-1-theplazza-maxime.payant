@@ -31,12 +31,10 @@ void plz::Kitchen::checkOrder(const std::string& message)
         else
             sstream << "End of service in: " << m_serviceTimer.getElapsedTime() << std::endl;
         std::string str = sstream.str();
-        std::cout << "Kitchen:" << std::endl << m_messenger;
         m_messenger << str;
     }
     else if (message == "freePlace") {
         std::string str = std::to_string(getFreePlace()) + ";";
-        std::cout << "Kitchen:" << std::endl << m_messenger;
         m_messenger << str;
     }
     else

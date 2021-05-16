@@ -33,7 +33,6 @@ void plz::Message::sendMessage(std::string& msg)
     plz::msg_buffer message{m_Stype, ""};
     int result;
 
-    std::cout << "Try to send <" << msg << ">" << std::endl;
     strcpy(message.mesg_text, msg.c_str());
     result = msgsnd(m_id, &message, sizeof(message.mesg_text), 0);
     if (result == -1) {
