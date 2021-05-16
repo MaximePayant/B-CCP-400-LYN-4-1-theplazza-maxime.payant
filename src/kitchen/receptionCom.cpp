@@ -26,10 +26,10 @@ void plz::Kitchen::checkOrder(const std::string& message)
         for (auto& [ing, count] : m_ingredientStock)
             sstream << ing << ": " << count << std::endl;
         sstream << "Next delivery in: "  << m_deliveryTimer.getElapsedTime() << std::endl;
-        if (m_isWorking)
-            sstream << "End of service in: NEVER!" << std::endl;
-        else
+        if (!m_pizzaWaiting && !m_pizzaCooking)
             sstream << "End of service in: " << m_serviceTimer.getElapsedTime() << std::endl;
+        else
+            sstream << "End of service in: NEVER!" << std::endl;
         std::string str = sstream.str();
         std::cout << "Kitchen:" << std::endl << m_messenger;
         m_messenger << str;
