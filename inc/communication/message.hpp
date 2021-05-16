@@ -53,8 +53,12 @@ namespace plz
         obj.sendMessage(message);
     }
 
-} // namespace plz
+    inline void operator>>(plz::Message& obj, std::string& message)
+    {
+        message = obj.readMessage();
+    }
 
+} // namespace plz
 
 std::string operator*(plz::Message &obj);
 

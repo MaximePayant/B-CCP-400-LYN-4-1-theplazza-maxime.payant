@@ -43,7 +43,8 @@ void plz::Reception::checkStatusKitchen()
     std::this_thread::sleep_for(std::chrono::milliseconds(2));
 
     for (auto it = m_messengerList.begin(); auto& messenger : m_messengerList) {
-        int statut = getStatut(*messenger);
+        messenger >> message;
+        int statut = getStatut(message);
         if (statut == -1) {
             it = m_messengerList.erase(it);
             m_nbrKitchen -= 1;
@@ -65,8 +66,10 @@ void plz::Reception::getStatus()
 
     std::this_thread::sleep_for(std::chrono::milliseconds(2));
 
-    for (auto& messenger : m_messengerList)
-        std::cout << *messenger << std::endl;
+    for (auto& messenger : m_messengerList) {
+        messenger >> message;
+        std::cout << message << std::endl;
+    }
 }
 
 int plz::Reception::createKitchen()
