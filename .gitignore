@@ -6,3 +6,4 @@ CMakeLists.txt
 plazza
 errors
 test
+.plazzaLog

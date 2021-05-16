@@ -12,6 +12,7 @@
 float plz::Shell::cookerMultiplier = 0;
 unsigned plz::Shell::cooksNumber = 0;
 unsigned plz::Shell::refillTime = 0;
+std::ofstream plz::Shell::fileStream(".plazzaLog");
 
 plz::Shell::Shell(float cookerMultiplierVal, unsigned int cooksNumberVal, unsigned int refillTimeVal)
 {
@@ -42,10 +43,8 @@ plz::Order plz::Shell::verifyCommand(std::string &command)
 
     for (std::sregex_iterator i = words_begin; i != words_end; ++i) {
         std::smatch match = *i;
-        //std::string match_str = match.str();
-
-        order.type = inPizzaType(match[2]);
-        order.size = inPizzaSize(match[3]);
+        order.type << match[2];
+        order.size << match[3];
         order.count = std::stoi(match[4]);
     }
     return (order);

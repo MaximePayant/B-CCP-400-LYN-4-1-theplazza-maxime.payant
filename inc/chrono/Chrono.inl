@@ -38,7 +38,7 @@ inline void plz::Chrono::tour()
     m_tour = m_end;
 }
 
-inline double plz::Chrono::getElapsedTime()
+inline double plz::Chrono::getElapsedTime() const
 {
     if (m_isRuning)
         m_end = std::chrono::steady_clock::now();
@@ -46,7 +46,7 @@ inline double plz::Chrono::getElapsedTime()
     return (step / 1000);
 }
 
-inline double plz::Chrono::getTotalTime()
+inline double plz::Chrono::getTotalTime() const
 {
     if (m_isRuning)
         m_end = std::chrono::steady_clock::now();

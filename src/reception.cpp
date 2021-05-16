@@ -32,10 +32,7 @@ void plz::Reception::checkStatusKitchen()
     std::string message("freePlace");
 
     m_listStatusKitchen.erase(m_listStatusKitchen.begin(), m_listStatusKitchen.end());
-    std::cout << "messengerList size : " << m_messengerList.size() << std::endl;
     for (int ctr = 0; auto& messenger : m_messengerList) {
-        std::cout << "Send message to kitchen n°" << ctr << " to get status" << std::endl;
-        std::cout << "Reception:" << std::endl << messenger;
         messenger << message;
         ctr += 1;
     }
@@ -66,10 +63,17 @@ void plz::Reception::getStatus()
 
     std::this_thread::sleep_for(std::chrono::milliseconds(2));
 
-    for (auto& messenger : m_messengerList) {
+    for (int ctr = 0; auto& messenger : m_messengerList) {
+        std::cout << "Kitchen n°" << ctr << ":" << std::endl;
         messenger >> message;
         std::cout << message << std::endl;
     }
+}
+
+static void childProcess(int index)
+{
+    plz::Kitchen kitchen(index);
+    kitchen();
 }
 
 int plz::Reception::createKitchen()
@@ -81,9 +85,8 @@ int plz::Reception::createKitchen()
         exit(EXIT_FAILURE);
     }
     else if (c_pid == 0) {
-        plz::Kitchen kitchen(m_nbrKitchen);
-        kitchen();
-        exit(0);
+        childProcess(m_nbrKitchen);
+        _exit(0);
     }
     else {
         m_messengerList.emplace_back(m_nbrKitchen, MSG_KITCHEN, MSG_RECEPTION);
@@ -98,7 +101,6 @@ int plz::Reception::findKitchen()
     int idxVal = -1;
 
     for(int ctr = 0; auto &elem : m_listStatusKitchen) {
-        std::cout << elem << " free place for kitchen n°" << ctr << std::endl;
         if (elem > 0 && elem > idxVal) {
             idxVal = elem;
             index = ctr;
@@ -106,7 +108,6 @@ int plz::Reception::findKitchen()
         ctr += 1;
     }
     if (index == -1) {
-        std::cout << "Create kitchen" << std::endl;
         index = m_nbrKitchen;
         createKitchen();
     }
@@ -117,7 +118,6 @@ void plz::Reception::sendOrder(unsigned kitchenTarget, plz::PizzaType pizzaType)
 {
     std::string type = inStringType(pizzaType);
 
-    std::cout << "Order a " << type << " for kitchen n°" << kitchenTarget << std::endl;
     m_messengerList.at(kitchenTarget).sendMessage(type);
 }
 
@@ -125,15 +125,11 @@ int plz::Reception::takeOrder(plz::Order order)
 {
     unsigned kitchenTarget;
 
-    std::cout << "Order " << order.count << " " << order.type << std::endl;
-
     while (order.count > 0) {
         checkStatusKitchen();
         kitchenTarget = findKitchen();
         sendOrder(kitchenTarget, order.type);
-        std::cout << "Sent" << std::endl;
         order.count -= 1;
-        std::cout << "----------" << std::endl;
         std::this_thread::sleep_for(std::chrono::milliseconds(2));
     }
     return (0);

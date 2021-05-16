@@ -23,7 +23,7 @@ namespace plz
             virtual unsigned getFreePlace() const = 0;
             virtual PizzaType getNextOrder() = 0;
             virtual bool gatherIngredient(plz::PizzaType type) = 0;
-            virtual void finishPizza() = 0;
+            virtual void finishPizza(PizzaType type) = 0;
 
             virtual void operator()() = 0;
 

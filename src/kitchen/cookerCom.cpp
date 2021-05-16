@@ -8,6 +8,7 @@
 #include <thread>
 
 #include "Kitchen.hpp"
+#include "shell.hpp"
 
 static bool hasIngredient(std::unordered_map<plz::Ingredient, unsigned> ingredientStock,
                           std::set<plz::Ingredient> neededIngredient)
@@ -38,16 +39,18 @@ plz::PizzaType plz::Kitchen::getNextOrder()
 
     if (order == plz::PizzaType::Nothing || !gatherIngredient(order))
         return (plz::PizzaType::Nothing);
+    plz::writeLog("Kitchen n°" + std::to_string(m_id) + ": Cooker take " + plz::inStringType(order) + " to cook.");
     m_pizzaQueue.pop();
     m_pizzaWaiting -= 1;
     m_pizzaCooking += 1;
     return (order);
 }
 
-void plz::Kitchen::finishPizza()
+void plz::Kitchen::finishPizza(PizzaType type)
 {
     std::unique_lock<std::mutex> locker(m_mutex);
 
+    plz::writeLog("Kitchen n°" + std::to_string(m_id) + ": " + plz::inStringType(type) + " cooked !");
     m_pizzaCooking -= 1;
     m_pizzaCooked += 1;
     if (!m_pizzaWaiting

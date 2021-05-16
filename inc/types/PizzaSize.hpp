@@ -36,6 +36,42 @@ namespace plz
             return (os);
         }
 
+    inline void operator<<(PizzaSize& type, const std::string& value)
+    {
+        static const std::unordered_map<std::string, PizzaSize> reference =
+        {
+            {"S",   PizzaSize::S},
+            {"M",   PizzaSize::M},
+            {"L",   PizzaSize::L},
+            {"XL",  PizzaSize::XL},
+            {"XXL", PizzaSize::XXL}
+        };
+
+        auto it = reference.find(value);
+
+        if (it == reference.end())
+            throw std::exception();
+        type = it->second;
+    }
+
+    inline void operator>>(const PizzaSize& type, std::string& value)
+    {
+        static const std::unordered_map<PizzaSize, std::string> reference =
+        {
+            {PizzaSize::S,   "S"},
+            {PizzaSize::M,   "M"},
+            {PizzaSize::L,   "L"},
+            {PizzaSize::XL,  "XL"},
+            {PizzaSize::XXL, "XXL"}
+        };
+
+        auto it = reference.find(type);
+
+        if (it == reference.end())
+            throw std::exception();
+        value = it->second;
+    }
+
     inline PizzaSize inPizzaSize(const std::string& value)
     {
         static const std::unordered_map<std::string, PizzaSize> reference =

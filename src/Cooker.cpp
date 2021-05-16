@@ -19,7 +19,14 @@ plz::Cooker::Cooker(IKitchen& kitchen)
         m_order(plz::PizzaType::Nothing),
         m_timer(plz::Chrono::Wait),
         m_statut(HasNothing)
-{}
+{
+    plz::writeLog("Cook ready to work !");
+}
+
+plz::Cooker::~Cooker()
+{
+    plz::writeLog("Cook expulsed...");
+}
 
 void plz::Cooker::workHard()
 {
@@ -36,7 +43,7 @@ void plz::Cooker::workHard()
     if (m_statut == Cooking) {
         while (m_timer.getElapsedTime() < plz::pizzaTime[m_order] * plz::Shell::cookerMultiplier)
             std::this_thread::sleep_for(waiting);
-        m_kitchen.finishPizza();
+        m_kitchen.finishPizza(m_order);
         m_statut = HasNothing;
     }
 }

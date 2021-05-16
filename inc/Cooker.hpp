@@ -33,7 +33,7 @@ namespace plz
         public:
             Cooker() = delete;
             Cooker(IKitchen& kitchen);
-            ~Cooker() override = default;
+            ~Cooker() override;
 
     }; // class Cooker
 

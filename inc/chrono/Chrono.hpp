@@ -19,7 +19,7 @@ namespace plz
         private:
             std::chrono::time_point<std::chrono::steady_clock> m_start;
             std::chrono::time_point<std::chrono::steady_clock> m_tour;
-            std::chrono::time_point<std::chrono::steady_clock> m_end;
+            mutable std::chrono::time_point<std::chrono::steady_clock> m_end;
             bool m_isRuning;
 
         public:
@@ -31,8 +31,8 @@ namespace plz
             void start();
             void stop();
             void tour();
-            double getElapsedTime();
-            double getTotalTime();
+            double getElapsedTime() const;
+            double getTotalTime() const;
 
     }; // class Chrono
 
