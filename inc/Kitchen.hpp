@@ -41,17 +41,19 @@ namespace plz
             bool m_isWorking;
             unsigned m_pizzaCooked;
 
+            unsigned getFreePlace() const override;
+            std::string getStatus() const;
+
         public:
             Kitchen() = delete;
             Kitchen(unsigned id);
-            ~Kitchen() override = default;
+            ~Kitchen() override;
 
             bool cookPizza(PizzaType pizza) override;
             void checkOrder(const std::string& message);
-            unsigned getFreePlace() const override;
             PizzaType getNextOrder() override;
             bool gatherIngredient(plz::PizzaType type) override;
-            void finishPizza() override;
+            void finishPizza(PizzaType type) override;
 
             void operator()();
 

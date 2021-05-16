@@ -40,7 +40,8 @@ void plz::Reception::checkStatusKitchen()
     std::this_thread::sleep_for(std::chrono::milliseconds(2));
 
     for (auto it = m_messengerList.begin(); auto& messenger : m_messengerList) {
-        int statut = getStatut(*messenger);
+        messenger >> message;
+        int statut = getStatut(message);
         if (statut == -1) {
             it = m_messengerList.erase(it);
             m_nbrKitchen -= 1;
@@ -62,8 +63,17 @@ void plz::Reception::getStatus()
 
     std::this_thread::sleep_for(std::chrono::milliseconds(2));
 
-    for (auto& messenger : m_messengerList)
-        std::cout << *messenger << std::endl;
+    for (int ctr = 0; auto& messenger : m_messengerList) {
+        std::cout << "Kitchen n°" << ctr << ":" << std::endl;
+        messenger >> message;
+        std::cout << message << std::endl;
+    }
+}
+
+static void childProcess(int index)
+{
+    plz::Kitchen kitchen(index);
+    kitchen();
 }
 
 int plz::Reception::createKitchen()
@@ -75,9 +85,8 @@ int plz::Reception::createKitchen()
         exit(EXIT_FAILURE);
     }
     else if (c_pid == 0) {
-        plz::Kitchen kitchen(m_nbrKitchen);
-        kitchen();
-        exit(0);
+        childProcess(m_nbrKitchen);
+        _exit(0);
     }
     else {
         m_messengerList.emplace_back(m_nbrKitchen, MSG_KITCHEN, MSG_RECEPTION);
@@ -115,7 +124,6 @@ void plz::Reception::sendOrder(unsigned kitchenTarget, plz::PizzaType pizzaType)
 int plz::Reception::takeOrder(plz::Order order)
 {
     unsigned kitchenTarget;
-
 
     while (order.count > 0) {
         checkStatusKitchen();

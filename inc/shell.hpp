@@ -9,6 +9,7 @@
 #define SHELL_HPP_
 
 #include <queue>
+#include <fstream>
 
 #include "plazza.hpp"
 #include "reception.hpp"
@@ -27,6 +28,7 @@ namespace plz
             static float cookerMultiplier;
             static unsigned cooksNumber;
             static unsigned refillTime;
+            static std::ofstream fileStream;
 
             Shell(float cookerMultiplier, unsigned cooksNumber, unsigned refillTime);
             ~Shell() = default;

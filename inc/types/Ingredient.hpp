@@ -15,6 +15,7 @@ namespace plz
 
     enum Ingredient
     {
+        Doe,
         Tomato,
         Gruyere,
         Ham,
@@ -22,12 +23,14 @@ namespace plz
         Steak,
         GoatCheese,
         EggPlant,
-        ChiefLove
+        ChiefLove,
+        END
     };
 
     inline std::ostream& operator<<(std::ostream& os, const Ingredient& type)
     {
         switch (type) {
+            case Ingredient::Doe:        os << "Doe";        break;
             case Ingredient::Tomato:     os << "Tomato";     break;
             case Ingredient::Gruyere:    os << "Gruyere";    break;
             case Ingredient::Ham:        os << "Ham";        break;
@@ -36,6 +39,8 @@ namespace plz
             case Ingredient::GoatCheese: os << "GoatCheese"; break;
             case Ingredient::EggPlant:   os << "EggPlant";   break;
             case Ingredient::ChiefLove:  os << "ChiefLove";  break;
+            default:
+                os << static_cast<int>(type); break;
         }
         return (os);
     }

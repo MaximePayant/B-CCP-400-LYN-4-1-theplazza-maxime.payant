@@ -26,10 +26,10 @@ namespace plz
 
     static std::unordered_map<PizzaType, std::set<Ingredient>> pizzaRecipe =
     {
-        {PizzaType::Margarita, {Ingredient::Tomato, Ingredient::Gruyere                                                }},
-        {PizzaType::Regina,    {Ingredient::Tomato, Ingredient::Gruyere,  Ingredient::Ham,        Ingredient::Mushrooms}},
-        {PizzaType::Americana, {Ingredient::Tomato, Ingredient::Gruyere,  Ingredient::Steak                            }},
-        {PizzaType::Fantasia,  {Ingredient::Tomato, Ingredient::EggPlant, Ingredient::GoatCheese, Ingredient::ChiefLove}}
+        {PizzaType::Margarita, {Ingredient::Doe, Ingredient::Tomato, Ingredient::Gruyere                                                }},
+        {PizzaType::Regina,    {Ingredient::Doe, Ingredient::Tomato, Ingredient::Gruyere,  Ingredient::Ham,        Ingredient::Mushrooms}},
+        {PizzaType::Americana, {Ingredient::Doe, Ingredient::Tomato, Ingredient::Gruyere,  Ingredient::Steak                            }},
+        {PizzaType::Fantasia,  {Ingredient::Doe, Ingredient::Tomato, Ingredient::EggPlant, Ingredient::GoatCheese, Ingredient::ChiefLove}}
     };
 
 } // namespace plz

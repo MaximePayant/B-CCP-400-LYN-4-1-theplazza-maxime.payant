@@ -17,4 +17,10 @@
 #define MSG_RECEPTION 1
 #define MSG_KITCHEN 2
 
+namespace plz
+{
+    std::string getTime();
+    void writeLog(const std::string& message);
+}
+
 #endif /* !PLAZZA_HPP_ */
